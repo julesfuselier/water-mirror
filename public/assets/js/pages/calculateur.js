@@ -3,7 +3,10 @@
 import { submitLead } from '../api.js';
 import { CONTACT_EMAIL } from '../config.js';
 import { estimateShowerCost } from '../stats.js';
-import { $, setText } from '../ui.js';
+import { hydrateIcons } from '../icons.js';
+import { $, setText, toast } from '../ui.js';
+
+hydrateIcons();
 
 const form = $('calc-form');
 const eur = (v, digits = 0) => v.toLocaleString('fr-FR', { minimumFractionDigits: digits, maximumFractionDigits: digits });
@@ -44,11 +47,23 @@ function render() {
     ? `En coupant l'eau ${r.savingMinutes} min plus tôt, tu économiserais ${int(r.savingEur)} € et ${int(r.savingLiters)} litres par an.`
     : 'Tes douches sont déjà ultra-courtes. Respect.');
 
+  // Goutti leans with the bill: upright when cheap, tilting as it climbs
   const perPerson = r.yearEur / input.people;
-  $('mascot').src = perPerson < 200 ? '/img/goutte_contente.png' : perPerson < 400 ? '/img/stress.png' : '/img/triste.png';
+  $('mascot').style.transform = `rotate(${Math.min(18, Math.max(0, (perPerson - 150) / 20))}deg)`;
 }
 
-form.addEventListener('input', render);
+// Fill the slider tracks up to the thumb (WebKit has no ::range-progress)
+function paintSliders() {
+  form.querySelectorAll('input[type="range"]').forEach((el) => {
+    el.style.setProperty('--fill', `${((el.value - el.min) / (el.max - el.min)) * 100}%`);
+  });
+}
+
+form.addEventListener('input', () => {
+  paintSliders();
+  render();
+});
+paintSliders();
 render();
 
 /* ---------- Share ---------- */
@@ -61,8 +76,7 @@ $('share-btn').addEventListener('click', async () => {
       await navigator.share({ title: 'Combien coûte ta douche ?', text, url });
     } else {
       await navigator.clipboard.writeText(`${text} ${url}`);
-      setText('share-btn', 'Lien copié !');
-      setTimeout(() => { $('share-btn').innerHTML = '<i class="fas fa-share-nodes"></i> Défier un ami'; }, 2000);
+      toast('Lien copié');
     }
   } catch { /* share cancelled */ }
 });

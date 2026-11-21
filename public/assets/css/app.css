@@ -1486,6 +1486,334 @@ textarea.input {
     }
 }
 
+/* ---------- Calculator ---------- */
+
+.calc-intro {
+    max-width: 44rem;
+    margin-bottom: 32px;
+}
+
+.calc-intro .display {
+    font-size: clamp(2.2rem, 5.5vw, 3.75rem);
+    margin-top: 16px;
+}
+
+.calc-intro p {
+    margin-top: 14px;
+    font-size: 1.125rem;
+    color: var(--text-2);
+}
+
+.calc-grid {
+    display: grid;
+    gap: 16px;
+    align-items: start;
+}
+
+@media (min-width: 900px) {
+    .calc-grid {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    }
+
+    .calc-results {
+        position: sticky;
+        top: calc(var(--topbar-h) + 24px);
+    }
+}
+
+.calc-inputs {
+    display: grid;
+    gap: 26px;
+}
+
+.field {
+    border: 0;
+    min-width: 0;
+}
+
+.field label,
+.field legend {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    margin-bottom: 12px;
+}
+
+.field output {
+    color: var(--blue);
+    font-variant-numeric: tabular-nums;
+}
+
+input[type='range'] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 28px;
+    background: transparent;
+    cursor: pointer;
+    --fill: 50%;
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--cyan), var(--blue)) 0 / var(--fill) 100% no-repeat, var(--surface-2);
+}
+
+input[type='range']::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--surface-2);
+}
+
+input[type='range']::-moz-range-progress {
+    height: 6px;
+    border-radius: 999px;
+    background: var(--brand);
+}
+
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 26px;
+    height: 26px;
+    margin-top: -10px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18), 0 0 0 0.5px rgba(0, 0, 0, 0.06);
+    transition: transform 0.15s var(--ease-out);
+}
+
+input[type='range']:active::-webkit-slider-thumb {
+    transform: scale(1.12);
+}
+
+input[type='range']::-moz-range-thumb {
+    width: 26px;
+    height: 26px;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chips label {
+    margin: 0;
+    width: auto;
+    font-weight: 500;
+}
+
+.chips input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.chips span {
+    display: inline-flex;
+    align-items: center;
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--text-2);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, transform 0.12s var(--ease-out);
+}
+
+.chips label:active span {
+    transform: scale(0.96);
+}
+
+.chips input:checked + span {
+    background: var(--blue);
+    color: #fff;
+}
+
+.chips input:focus-visible + span {
+    outline: 3px solid color-mix(in srgb, var(--blue) 55%, transparent);
+    outline-offset: 2px;
+}
+
+.calc-result-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.calc-results .hero-value {
+    margin-top: 8px;
+    font-size: clamp(3.5rem, 11vw, 5.5rem);
+}
+
+.calc-mascot {
+    height: 120px;
+    width: auto;
+    transform-origin: 50% 100%;
+    transition: transform 0.5s var(--ease-out);
+}
+
+.calc-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 22px 0 16px;
+    padding: 16px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.calc-stats strong {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+}
+
+.calc-stats span {
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.calc-saving {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.16);
+    font-weight: 500;
+}
+
+.calc-share {
+    margin-top: 18px;
+    background: #fff;
+    color: #0b0d10;
+}
+
+.calc-method {
+    margin-top: 16px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.calc-lead {
+    margin-top: 48px;
+    display: grid;
+    gap: 28px;
+}
+
+@media (min-width: 900px) {
+    .calc-lead {
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        padding: 40px;
+    }
+}
+
+.lead-form {
+    display: grid;
+    gap: 12px;
+}
+
+.lead-row {
+    display: grid;
+    gap: 12px;
+}
+
+@media (min-width: 560px) {
+    .lead-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+select.input {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 40px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-3) 50%), linear-gradient(135deg, var(--text-3) 50%, transparent 50%);
+    background-position: calc(100% - 22px) 52%, calc(100% - 16px) 52%;
+    background-size: 6px 6px;
+    background-repeat: no-repeat;
+}
+
+.checks {
+    border: 0;
+    display: grid;
+    gap: 10px;
+    margin: 6px 0;
+    font-size: 0.9375rem;
+}
+
+.checks label,
+.checks.consent {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    cursor: pointer;
+}
+
+.checks.consent {
+    font-size: 0.8125rem;
+    color: var(--text-2);
+}
+
+.checks input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    flex-shrink: 0;
+    accent-color: var(--blue);
+}
+
+.hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.form-msg {
+    min-height: 1.4em;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.form-msg.success {
+    color: var(--success);
+}
+
+.form-msg.error {
+    color: var(--danger);
+}
+
+.privacy {
+    font-size: 0.8125rem;
+    color: var(--text-2);
+}
+
+.privacy summary {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.privacy p {
+    margin-top: 8px;
+}
+
+.privacy a {
+    color: var(--blue);
+}
+
 /* ---------------------------------------------------------------- accessibility preferences */
 
 @media (prefers-reduced-motion: reduce) {

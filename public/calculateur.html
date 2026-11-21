@@ -2,56 +2,49 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Combien coûte vraiment ta douche ? | Water Mirror</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Combien coûte vraiment ta douche ? · Water Mirror</title>
     <meta name="description" content="Calcule en 20 secondes ce que tes douches te coûtent chaque année en eau et en énergie. Gratuit, sans inscription.">
+    <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/img/logo-mark.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap">
+    <link rel="stylesheet" href="/assets/css/app.css">
     <meta property="og:title" content="Combien coûte vraiment ta douche ?">
     <meta property="og:description" content="Calcule en 20 secondes ce que tes douches te coûtent chaque année. Le résultat risque de te surprendre.">
     <meta property="og:image" content="/img/device_hero.webp">
-    <link rel="icon" href="/img/logo.png" type="image/png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Rajdhani:wght@600;700;800&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/base.css">
-    <link rel="stylesheet" href="/assets/css/pages/calculateur.css">
     <script type="module" src="/assets/js/pages/calculateur.js"></script>
 </head>
 <body data-page="calculateur">
-    <div class="bg-glow"></div>
-
     <header class="topbar">
-        <a href="/calculateur" class="brand"><img src="/img/logo.png" alt=""> Water<span>Mirror</span></a>
-        <a href="/about" class="topbar-link">Le boîtier <i class="fas fa-arrow-right"></i></a>
+        <a class="brand" href="/calculateur"><img src="/img/logo-mark.png" alt="" width="22" height="26">Water Mirror</a>
+        <a class="btn btn-plain btn-sm" href="/about" style="margin-left: auto;">Le boîtier <i data-icon="arrow"></i></a>
     </header>
 
-    <main class="calc-page">
-
-        <section class="intro">
-            <span class="tag"><i class="fas fa-calculator"></i> Calculateur gratuit · 20 secondes</span>
-            <h1>Combien coûte <span>vraiment</span> ta douche ?</h1>
-            <p>Eau + chauffage, sur toute une année : le chiffre surprend presque tout le monde.</p>
+    <main class="page calc-page">
+        <section class="calc-intro">
+            <span class="badge badge-brand">Calculateur gratuit · 20 secondes</span>
+            <h1 class="display">Combien coûte <em class="accent brand-text">vraiment</em> ta douche ?</h1>
+            <p>Eau et chauffage, sur toute une année : le chiffre surprend presque tout le monde.</p>
         </section>
 
         <div class="calc-grid">
-
-            <!-- Inputs -->
-            <form class="card inputs" id="calc-form" autocomplete="off">
+            <form class="card calc-inputs" id="calc-form" autocomplete="off">
                 <div class="field">
-                    <label for="minutes">Durée d'une douche <output id="minutes-out">8 min</output></label>
+                    <label for="minutes">Durée d’une douche <output id="minutes-out">8 min</output></label>
                     <input type="range" id="minutes" name="minutes" min="1" max="25" step="1" value="8">
                 </div>
-
                 <div class="field">
-                    <label for="perWeek">Douches par semaine (par personne) <output id="perWeek-out">7</output></label>
+                    <label for="perWeek">Douches par semaine, par personne <output id="perWeek-out">7</output></label>
                     <input type="range" id="perWeek" name="perWeek" min="1" max="14" step="1" value="7">
                 </div>
-
                 <div class="field">
                     <label for="people">Personnes dans le logement <output id="people-out">1</output></label>
                     <input type="range" id="people" name="people" min="1" max="8" step="1" value="1">
                 </div>
-
                 <fieldset class="field">
                     <legend>Ton pommeau de douche</legend>
                     <div class="chips">
@@ -59,11 +52,10 @@
                         <label><input type="radio" name="showerhead" value="eco"><span>Économique</span></label>
                         <label><input type="radio" name="showerhead" value="unknown"><span>Je ne sais pas</span></label>
                     </div>
-                    <p class="hint"><i class="fas fa-lightbulb"></i> Astuce : remplis un seau pendant 10 s. Plus de 1,5 L ? Ton pommeau est classique.</p>
+                    <p class="caption" style="margin-top: 10px;">Astuce : remplis un seau pendant 10 secondes. Plus de 1,5 L ? Ton pommeau est classique.</p>
                 </fieldset>
-
                 <fieldset class="field">
-                    <legend>Chauffage de l'eau</legend>
+                    <legend>Chauffage de l’eau</legend>
                     <div class="chips">
                         <label><input type="radio" name="heater" value="electric" checked><span>Électrique</span></label>
                         <label><input type="radio" name="heater" value="gas"><span>Gaz</span></label>
@@ -73,64 +65,54 @@
                 </fieldset>
             </form>
 
-            <!-- Results -->
-            <section class="card results" aria-live="polite">
-                <div class="result-head">
-                    <img id="mascot" src="/img/goutte_contente.png" alt="">
+            <section class="card card-brand calc-results" aria-live="polite">
+                <div class="calc-result-head">
                     <div>
-                        <p class="result-label" id="year-label">Tes douches te coûtent</p>
-                        <p class="big-number"><span id="year-eur">0</span> €<small>/an</small></p>
+                        <p class="label" id="year-label">Tes douches te coûtent</p>
+                        <p class="hero-value"><span id="year-eur">0</span><small>€/an</small></p>
                     </div>
+                    <img id="mascot" class="calc-mascot" src="/img/goutti.webp" alt="" width="94" height="120">
                 </div>
-
-                <div class="stats">
-                    <div><strong id="per-shower">0 €</strong><span>par douche</span></div>
-                    <div><strong id="year-liters">0</strong><span>litres par an</span></div>
-                    <div><strong id="bathtubs">0</strong><span>baignoires remplies</span></div>
+                <div class="calc-stats">
+                    <div><strong id="per-shower" class="num">0 €</strong><span>par douche</span></div>
+                    <div><strong id="year-liters" class="num">0</strong><span>litres par an</span></div>
+                    <div><strong id="bathtubs" class="num">0</strong><span>baignoires</span></div>
                 </div>
-
-                <p class="split" id="split"></p>
-
-                <div class="saving">
-                    <i class="fas fa-stopwatch"></i>
-                    <p id="saving-text"></p>
-                </div>
-
-                <button type="button" class="share-btn" id="share-btn"><i class="fas fa-share-nodes"></i> Défier un ami</button>
-                <p class="method">Estimation sur la base du prix moyen de l'eau en France (4,89 €/m³) et du tarif réglementé de l'électricité. Ton coût réel dépend de ta commune et de ton contrat.</p>
+                <p class="secondary" id="split"></p>
+                <p class="calc-saving" id="saving-text"></p>
+                <button type="button" class="btn calc-share" id="share-btn"><i data-icon="share"></i> <span>Défier un ami</span></button>
+                <p class="calc-method">Estimation basée sur le prix moyen de l’eau en France (4,89 €/m³) et le tarif réglementé de l’électricité. Ton coût réel dépend de ta commune et de ton contrat.</p>
             </section>
         </div>
 
-        <!-- Lead capture -->
-        <section class="card lead" id="lead">
-            <div class="lead-copy">
-                <h2>Fais baisser ce chiffre <span>en jouant</span>.</h2>
-                <p>Water Mirror est un petit boîtier qui affiche ta consommation pendant la douche, et une appli qui transforme chaque litre économisé en défi entre colocs, étages ou en famille. On cherche nos premiers testeurs.</p>
-                <ul>
-                    <li><i class="fas fa-check"></i> Sois prévenu du lancement</li>
-                    <li><i class="fas fa-check"></i> Teste le boîtier gratuitement dans ta résidence</li>
-                    <li><i class="fas fa-check"></i> Aucun spam, désinscription en un clic</li>
+        <section class="card calc-lead" id="lead">
+            <div>
+                <h2 class="title-1">Fais baisser ce chiffre <em class="accent brand-text">en jouant.</em></h2>
+                <p class="secondary" style="margin-top: 14px;">Water Mirror est un petit boîtier qui affiche ta consommation pendant la douche, et une appli qui transforme chaque litre économisé en défi entre colocs, voisins d’étage ou en famille. On cherche nos premiers testeurs.</p>
+                <ul class="feature-list">
+                    <li>Sois prévenu du lancement</li>
+                    <li>Teste le boîtier gratuitement dans ta résidence</li>
+                    <li>Aucun spam, désinscription en un clic</li>
                 </ul>
             </div>
 
             <form id="lead-form" class="lead-form" novalidate>
-                <div class="row">
-                    <input type="email" name="email" placeholder="Ton e-mail *" required autocomplete="email">
-                    <input type="text" name="firstName" placeholder="Prénom" autocomplete="given-name" maxlength="60">
+                <div class="lead-row">
+                    <input class="input" type="email" name="email" placeholder="Ton e-mail *" required autocomplete="email" aria-label="E-mail">
+                    <input class="input" type="text" name="firstName" placeholder="Prénom" autocomplete="given-name" maxlength="60" aria-label="Prénom">
                 </div>
-                <div class="row">
-                    <select name="profile" aria-label="Tu es">
+                <div class="lead-row">
+                    <select class="input" name="profile" aria-label="Tu es">
                         <option value="student_residence">Étudiant·e en résidence</option>
                         <option value="flatshare">En colocation</option>
                         <option value="family">En famille</option>
-                        <option value="manager">Gestionnaire de résidence / bailleur</option>
+                        <option value="manager">Gestionnaire de résidence ou bailleur</option>
                         <option value="other">Autre</option>
                     </select>
-                    <input type="text" name="city" placeholder="Ville" autocomplete="address-level2" maxlength="80">
+                    <input class="input" type="text" name="city" placeholder="Ville" autocomplete="address-level2" maxlength="80" aria-label="Ville">
                 </div>
-
-                <fieldset class="interests">
-                    <legend>Ça m'intéresse :</legend>
+                <fieldset class="checks">
+                    <legend class="label">Ça m’intéresse :</legend>
                     <label><input type="checkbox" name="interests" value="launch" checked> Être prévenu du lancement</label>
                     <label><input type="checkbox" name="interests" value="pilot"> Tester le boîtier</label>
                     <label><input type="checkbox" name="interests" value="partner"> Un partenariat (pro, résidence, marque)</label>
@@ -139,21 +121,20 @@
                 <!-- Honeypot anti-spam: hidden from humans -->
                 <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-                <label class="consent">
+                <label class="checks consent">
                     <input type="checkbox" name="consent" required>
-                    <span>J'accepte que l'équipe Water Mirror conserve mon e-mail et mes réponses pour me recontacter au sujet du projet. Je peux me désinscrire à tout moment.</span>
+                    <span>J’accepte que l’équipe Water Mirror conserve mon e-mail et mes réponses pour me recontacter au sujet du projet. Je peux me désinscrire à tout moment.</span>
                 </label>
 
-                <button type="submit" class="cta" id="lead-submit">Je veux tester Water Mirror <i class="fas fa-arrow-right"></i></button>
+                <button type="submit" class="btn btn-brand btn-block" id="lead-submit">Je veux tester Water Mirror</button>
                 <p class="form-msg" id="lead-msg" role="status"></p>
 
                 <details class="privacy">
                     <summary>Comment sont utilisées mes données ?</summary>
-                    <p>Responsable : l'équipe projet Water Mirror (étudiants UTT). Finalité : te recontacter au sujet de Water Mirror (lancement, tests, actualités) et mieux comprendre nos futurs utilisateurs. Données : e-mail, prénom, profil, ville, réponses au calculateur. Conservation : 3 ans après notre dernier échange. Elles ne sont jamais vendues ni transmises à des tiers. Pour y accéder, les corriger ou les supprimer : <a id="privacy-mail" href="#"></a>.</p>
+                    <p>Responsable : l’équipe projet Water Mirror (étudiants UTT). Finalité : te recontacter au sujet de Water Mirror (lancement, tests, actualités) et mieux comprendre nos futurs utilisateurs. Données : e-mail, prénom, profil, ville, réponses au calculateur. Conservation : 3 ans après notre dernier échange. Elles ne sont jamais vendues ni transmises à des tiers. Pour y accéder, les corriger ou les supprimer : <a id="privacy-mail" href="#"></a>.</p>
                 </details>
             </form>
         </section>
-
     </main>
 </body>
 </html>
