@@ -17,7 +17,7 @@ const PARTS = [
 
 const CLOSED_X = 0.5; // every part is centred here when the device is closed
 const LABEL_ROW = 0.495;
-const CROP = 0.8; // visible picture height / width, must match --crop on .explode-stage
+const CROP = 0.66; // visible picture height / width, must match --crop on .explode-stage
 const OPEN_DISTANCE = 0.55; // share of the screen height to scroll to open the device fully
 const SMOOTHING = 0.08; // seconds: how softly the parts follow the scroll
 const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
@@ -50,7 +50,7 @@ export function initExplodedView(section) {
       const isPipe = p.name === 'debitmetre';
       Object.assign(label.style, {
         left: `${(isPipe ? p.x + p.w + 0.07 : p.x + p.w / 2) * 100}%`,
-        top: `${((isPipe ? p.y + 0.2 : LABEL_ROW) / CROP) * 100}%`, // one shared baseline under the device
+        top: `${((isPipe ? p.y + 0.1 : LABEL_ROW) / CROP) * 100}%`, // one shared baseline under the device
       });
       stage.append(label);
     }

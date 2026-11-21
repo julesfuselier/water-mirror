@@ -1881,16 +1881,16 @@ select.input {
 /* The stage shows the picture down to --crop of its width: the useless end of the pipe is cut,
    so the device body sits near the visual centre. */
 .explode-stage {
-    --crop: 0.8;
+    --crop: 0.66;
     position: relative;
-    width: min(760px, 94vw, calc((100dvh - var(--topbar-h) - 56px) / var(--crop)));
+    width: min(800px, 94vw, calc((100dvh - var(--topbar-h) - 72px) / var(--crop)));
     aspect-ratio: 1 / var(--crop);
     overflow: hidden;
 }
 
 .explode-part.is-pipe {
-    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 66%);
-    mask-image: linear-gradient(to bottom, #000 45%, transparent 66%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 22%, transparent 42%);
+    mask-image: linear-gradient(to bottom, #000 22%, transparent 42%);
 }
 
 .explode-fallback {
