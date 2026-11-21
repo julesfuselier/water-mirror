@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Water Mirror 💧
 
-## Getting Started
+Boîtier connecté (ESP32 + débitmètre) qui mesure chaque douche, et web app familiale qui transforme ces mesures en jeu : mascotte Goutti, classement familial, quêtes, impact collectif.
 
-First, run the development server:
+En ligne : https://water-mirror.vercel.app
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Architecture
+
+```
+ESP32 ──(Wi-Fi, clé device)──▶ /update ou POST /api/showers ──▶ Postgres (Neon)
+                                                                    │
+Navigateur ◀── pages statiques (public/) ◀── GET /api/showers ◀─────┘
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Dossier | Contenu |
+| --- | --- |
+| `public/` | Le site (HTML/CSS/JS sans build). `index.html` = choix du profil, `dashboard.html` = accueil perso |
+| `public/assets/css/base.css` | Couleurs, reset, navigation (sidebar desktop / barre mobile) |
+| `public/assets/css/pages/` | Styles propres à chaque page |
+| `public/assets/js/` | Modules partagés : `config.js` (constantes métier), `api.js`, `session.js`, `stats.js` (calculs), `ui.js` (nav, helpers) |
+| `public/assets/js/pages/` | La logique de chaque page |
+| `api/` | Fonctions serverless Vercel |
+| `lib/` | Accès base de données, validation, helpers HTTP |
+| `db/` | Schéma SQL + historique de démo (ancien `donnees.json`) |
+| `scripts/` | Serveur de dev local et import des données |
+| `design/unused-assets/` | Images non utilisées par le site (fonds du futur shop, etc.), non déployées |
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## API
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Méthode | Route | Auth | Rôle |
+| --- | --- | --- | --- |
+| GET | `/api/showers[?user=Alex]` | — | Historique des douches (plus ancienne en premier) |
+| POST | `/api/showers` | clé device | Ajoute une douche `{ "user": "Alex", "liters": 12.5, "duration": "3m10s" }` |
+| GET/POST | `/update?user=Alex&liters=12.5&duration=3m10s` | clé device | Route compatible avec l'ancien firmware ESP32 |
+| POST | `/api/reset` | clé admin | Efface tout l'historique |
 
-## Learn More
+La clé s'envoie dans l'en-tête `x-api-key` ou en paramètre `?key=`.
+`duration` accepte des minutes (`3.5`) ou le format `3m30s`. Ajouter `device=<id>` permet d'identifier le boîtier, et `createdAt` (date ISO) d'envoyer une mesure faite hors ligne.
 
-To learn more about Next.js, take a look at the following resources:
+## Lancer en local
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev        # http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Sans base de données, le serveur local utilise les données de démo de `db/seed-data.json` (en mémoire, remises à zéro au redémarrage).
+Pour travailler sur la vraie base : `npx vercel link` puis `npx vercel env pull .env.local`.
 
-## Deploy on Vercel
+## Mise en ligne (Vercel)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Chaque `git push` sur `main` redéploie le site. Variables d'environnement du projet Vercel :
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `DATABASE_URL` : ajoutée automatiquement en connectant une base **Neon** (onglet Storage du projet)
+- `DEVICE_API_KEY` : clé que l'ESP32 envoie avec chaque mesure
+- `ADMIN_API_KEY` : clé demandée par le bouton « Reset Family »
+
+La table `showers` se crée toute seule au premier appel. Pour importer l'historique de démo : `npm run seed`.
+
+## Firmware ESP32
+
+Remplacer l'ancienne URL `http://<ip-du-pc>:5001/update?...` par :
+
+```
+https://water-mirror.vercel.app/update?user=<profil>&liters=<litres>&duration=<durée>&key=<DEVICE_API_KEY>
+```
+
+(HTTPS : utiliser `WiFiClientSecure` côté ESP32.)
+
+## Constantes métier
+
+Tout est dans `public/assets/js/config.js` : douche de référence (60 L), seuil « éco » (40 L), prix estimé du litre d'eau chaude, fréquence de rafraîchissement.

@@ -1,0 +1,265 @@
+/* device page */
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    overflow-x: hidden;
+    display: flex;
+    min-height: 100dvh;
+}
+
+.bg-ripple {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 10% 20%, rgba(0, 210, 255, 0.05), transparent 40%), radial-gradient(circle at 90% 80%, rgba(255, 75, 43, 0.03), transparent 40%);
+}
+
+.nav-fab-container {
+    position: relative;
+    top: -25px;
+    z-index: 101;
+}
+
+.main-content {
+    flex: 1;
+    padding: 15px;
+    padding-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    gap: 20px;
+}
+
+.header-section h1 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-section h1 span {
+    color: var(--primary);
+}
+
+.header-section p {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.widget {
+    background: var(--card-bg);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.widget h3 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+
+.diag-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.diag-box {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 15px;
+    text-align: center;
+}
+
+.diag-box i {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+.diag-val {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.diag-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--success);
+    box-shadow: 0 0 10px var(--success);
+    margin-right: 5px;
+}
+
+.instruction-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.instruction-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.instruction-list li .step-num {
+    background: rgba(0, 210, 255, 0.1);
+    color: var(--primary);
+    font-weight: 800;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    font-size: 0.75rem;
+}
+
+.instruction-list li strong {
+    color: var(--text-main);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.objective-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 15px;
+}
+
+.obj-tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.obj-tag i {
+    margin-right: 5px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.star-rating {
+    display: flex;
+    gap: 10px;
+    font-size: 1.8rem;
+    color: #444;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.star-rating i {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.star-rating i.active, .star-rating i:hover {
+    color: var(--warning);
+    filter: drop-shadow(0 0 10px rgba(241, 196, 15, 0.4));
+    transform: scale(1.1);
+}
+
+textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 12px;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    transition: border 0.3s;
+}
+
+textarea:focus {
+    border-color: var(--primary);
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--primary), #0088ff);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    width: 100%;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
+    transition: transform 0.2s;
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+@media (min-width: 1024px) {
+    .main-content {
+        padding: 40px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr;
+        gap: 25px;
+    }
+
+    .header-section {
+        grid-column: 1 / -1;
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "water-mirror",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Water Mirror — smart shower tracker (ESP32) and family web app",
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env.local scripts/dev-server.js",
+    "seed": "node --env-file-if-exists=.env.local scripts/seed.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.0"
+  }
+}

@@ -1,0 +1,189 @@
+/* Water Mirror — shared design tokens, reset and navigation.
+   Page-specific styles live in assets/css/pages/<page>.css */
+
+:root {
+    --bg-color: #05080f;
+    --sidebar-bg: #0b0f19;
+    --card-bg: rgba(18, 24, 38, 0.65);
+    --glass-heavy: rgba(11, 15, 25, 0.95);
+    --primary: #00d2ff;
+    --success: #00ff88;
+    --warning: #f1c40f;
+    --danger: #ff4b2b;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+    --text-main: #f3f4f6;
+    --text-muted: #64748b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Mobile bottom navigation ---------- */
+
+.sidebar {
+    display: none;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--glass-heavy);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px 0;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    width: 60px;
+    transition: color 0.3s;
+}
+
+.nav-item i {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+    transition: color 0.3s;
+}
+
+.nav-item.active {
+    color: white;
+}
+
+.nav-item.active i {
+    color: var(--primary);
+    text-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+}
+
+.nav-fab-container {
+    position: relative;
+    top: -25px;
+    z-index: 101;
+}
+
+.nav-fab {
+    background: linear-gradient(135deg, var(--primary), #0088ff);
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 10px 25px rgba(0, 210, 255, 0.4);
+    border: 5px solid var(--bg-color);
+    transition: transform 0.2s;
+}
+
+.nav-fab:active {
+    transform: scale(0.95);
+}
+
+.nav-fab i {
+    font-size: 1.6rem;
+    margin-bottom: 2px;
+}
+
+/* ---------- Desktop sidebar ---------- */
+
+@media (min-width: 1024px) {
+    .bottom-nav {
+        display: none;
+    }
+
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        width: 280px;
+        background-color: var(--sidebar-bg);
+        backdrop-filter: blur(20px);
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 35px 25px;
+        box-shadow: 5px 0 30px rgba(0, 0, 0, 0.5);
+        z-index: 10;
+    }
+
+    .logo {
+        font-size: 1.4rem;
+        font-weight: 800;
+        margin-bottom: 45px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .logo img {
+        height: 32px;
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.6));
+    }
+
+    .logo span {
+        color: var(--primary);
+        text-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+    }
+
+    .menu {
+        list-style: none;
+        flex-grow: 1;
+    }
+
+    .menu li {
+        margin-bottom: 6px;
+    }
+
+    .menu a {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 14px 18px;
+        color: var(--text-muted);
+        text-decoration: none;
+        border-radius: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .menu li.active a,
+    .menu a:hover {
+        background: rgba(0, 210, 255, 0.08);
+        color: var(--primary);
+        transform: translateX(5px);
+    }
+
+    .menu a.danger {
+        color: var(--danger);
+    }
+
+    .logout-link {
+        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 25px;
+    }
+}
