@@ -1863,7 +1863,7 @@ select.input {
 
 .explode {
     position: relative;
-    height: 260vh;
+    height: 160vh; /* about half a screen of scrolling opens the device */
     margin-top: 8px;
 }
 
