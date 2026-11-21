@@ -1,0 +1,986 @@
+[
+    {
+        "date": "2026-01-03 06:55:00",
+        "utilisateur": "Alex",
+        "litres": 12.0,
+        "duree": 2.6
+    },
+    {
+        "date": "2026-01-04 07:05:00",
+        "utilisateur": "Alex",
+        "litres": 14.5,
+        "duree": 3.1
+    },
+    {
+        "date": "2026-01-06 07:10:00",
+        "utilisateur": "Alex",
+        "litres": 11.0,
+        "duree": 2.4
+    },
+    {
+        "date": "2026-01-09 07:00:00",
+        "utilisateur": "Alex",
+        "litres": 18.0,
+        "duree": 3.8
+    },
+    {
+        "date": "2026-01-12 06:50:00",
+        "utilisateur": "Alex",
+        "litres": 10.5,
+        "duree": 2.3
+    },
+    {
+        "date": "2026-01-18 07:05:00",
+        "utilisateur": "Alex",
+        "litres": 13.0,
+        "duree": 2.9
+    },
+    {
+        "date": "2026-02-01 07:15:00",
+        "utilisateur": "Alex",
+        "litres": 15.5,
+        "duree": 3.2
+    },
+    {
+        "date": "2026-02-07 07:20:00",
+        "utilisateur": "Alex",
+        "litres": 11.5,
+        "duree": 2.7
+    },
+    {
+        "date": "2026-02-12 06:55:00",
+        "utilisateur": "Alex",
+        "litres": 13.2,
+        "duree": 2.8
+    },
+    {
+        "date": "2026-03-01 07:00:00",
+        "utilisateur": "Alex",
+        "litres": 17.8,
+        "duree": 4.0
+    },
+    {
+        "date": "2026-03-10 07:10:00",
+        "utilisateur": "Alex",
+        "litres": 16.0,
+        "duree": 3.5
+    },
+    {
+        "date": "2026-04-02 07:05:00",
+        "utilisateur": "Alex",
+        "litres": 12.8,
+        "duree": 2.6
+    },
+    {
+        "date": "2026-04-18 06:50:00",
+        "utilisateur": "Alex",
+        "litres": 10.0,
+        "duree": 2.1
+    },
+    {
+        "date": "2026-05-05 07:00:00",
+        "utilisateur": "Alex",
+        "litres": 13.7,
+        "duree": 2.9
+    },
+    {
+        "date": "2026-05-15 07:00:00",
+        "utilisateur": "Alex",
+        "litres": 15.0,
+        "duree": 3.0
+    },
+    {
+        "date": "2026-05-16 07:00:00",
+        "utilisateur": "Alex",
+        "litres": 12.0,
+        "duree": 2.5
+    },
+    {
+        "date": "2026-05-17 07:10:00",
+        "utilisateur": "Alex",
+        "litres": 18.0,
+        "duree": 4.0
+    },
+    {
+        "date": "2026-05-18 06:50:00",
+        "utilisateur": "Alex",
+        "litres": 9.5,
+        "duree": 2.0
+    },
+    {
+        "date": "2026-05-19 07:15:00",
+        "utilisateur": "Alex",
+        "litres": 14.0,
+        "duree": 3.0
+    },
+    {
+        "date": "2026-01-05 07:35:00",
+        "utilisateur": "Julie",
+        "litres": 33.0,
+        "duree": 6.7
+    },
+    {
+        "date": "2026-01-11 07:45:00",
+        "utilisateur": "Julie",
+        "litres": 45.0,
+        "duree": 8.1
+    },
+    {
+        "date": "2026-01-20 07:20:00",
+        "utilisateur": "Julie",
+        "litres": 29.0,
+        "duree": 5.0
+    },
+    {
+        "date": "2026-02-04 07:30:00",
+        "utilisateur": "Julie",
+        "litres": 28.0,
+        "duree": 5.4
+    },
+    {
+        "date": "2026-02-14 08:10:00",
+        "utilisateur": "Julie",
+        "litres": 41.0,
+        "duree": 7.3
+    },
+    {
+        "date": "2026-02-27 07:25:00",
+        "utilisateur": "Julie",
+        "litres": 24.0,
+        "duree": 4.2
+    },
+    {
+        "date": "2026-03-09 07:50:00",
+        "utilisateur": "Julie",
+        "litres": 35.0,
+        "duree": 6.5
+    },
+    {
+        "date": "2026-03-25 08:00:00",
+        "utilisateur": "Julie",
+        "litres": 31.0,
+        "duree": 5.9
+    },
+    {
+        "date": "2026-04-08 07:40:00",
+        "utilisateur": "Julie",
+        "litres": 22.0,
+        "duree": 4.0
+    },
+    {
+        "date": "2026-04-22 08:05:00",
+        "utilisateur": "Julie",
+        "litres": 40.0,
+        "duree": 7.0
+    },
+    {
+        "date": "2026-05-15 07:30:00",
+        "utilisateur": "Julie",
+        "litres": 35.0,
+        "duree": 6.5
+    },
+    {
+        "date": "2026-05-16 07:45:00",
+        "utilisateur": "Julie",
+        "litres": 28.0,
+        "duree": 5.0
+    },
+    {
+        "date": "2026-05-17 08:00:00",
+        "utilisateur": "Julie",
+        "litres": 40.0,
+        "duree": 7.0
+    },
+    {
+        "date": "2026-05-18 07:20:00",
+        "utilisateur": "Julie",
+        "litres": 22.0,
+        "duree": 4.0
+    },
+    {
+        "date": "2026-05-19 08:10:00",
+        "utilisateur": "Julie",
+        "litres": 32.0,
+        "duree": 6.0
+    },
+    {
+        "date": "2026-01-06 19:30:00",
+        "utilisateur": "Maman",
+        "litres": 57.0,
+        "duree": 9.2
+    },
+    {
+        "date": "2026-01-14 20:15:00",
+        "utilisateur": "Maman",
+        "litres": 48.0,
+        "duree": 8.1
+    },
+    {
+        "date": "2026-01-21 19:00:00",
+        "utilisateur": "Maman",
+        "litres": 62.0,
+        "duree": 10.0
+    },
+    {
+        "date": "2026-02-03 19:45:00",
+        "utilisateur": "Maman",
+        "litres": 53.0,
+        "duree": 9.5
+    },
+    {
+        "date": "2026-02-19 20:10:00",
+        "utilisateur": "Maman",
+        "litres": 42.0,
+        "duree": 7.8
+    },
+    {
+        "date": "2026-03-03 19:55:00",
+        "utilisateur": "Maman",
+        "litres": 50.0,
+        "duree": 8.8
+    },
+    {
+        "date": "2026-03-22 18:40:00",
+        "utilisateur": "Maman",
+        "litres": 68.0,
+        "duree": 10.6
+    },
+    {
+        "date": "2026-04-05 19:10:00",
+        "utilisateur": "Maman",
+        "litres": 45.0,
+        "duree": 8.3
+    },
+    {
+        "date": "2026-04-29 20:00:00",
+        "utilisateur": "Maman",
+        "litres": 55.0,
+        "duree": 9.8
+    },
+    {
+        "date": "2026-05-15 19:00:00",
+        "utilisateur": "Maman",
+        "litres": 45.0,
+        "duree": 8.0
+    },
+    {
+        "date": "2026-05-19 19:00:00",
+        "utilisateur": "Maman",
+        "litres": 55.0,
+        "duree": 10.0
+    },
+    {
+        "date": "2026-01-07 20:00:00",
+        "utilisateur": "Papa",
+        "litres": 85.0,
+        "duree": 12.0
+    },
+    {
+        "date": "2026-01-16 20:20:00",
+        "utilisateur": "Papa",
+        "litres": 92.0,
+        "duree": 13.5
+    },
+    {
+        "date": "2026-01-23 20:10:00",
+        "utilisateur": "Papa",
+        "litres": 78.0,
+        "duree": 11.0
+    },
+    {
+        "date": "2026-02-05 20:35:00",
+        "utilisateur": "Papa",
+        "litres": 95.0,
+        "duree": 14.0
+    },
+    {
+        "date": "2026-02-18 20:05:00",
+        "utilisateur": "Papa",
+        "litres": 82.0,
+        "duree": 11.8
+    },
+    {
+        "date": "2026-03-02 19:50:00",
+        "utilisateur": "Papa",
+        "litres": 88.0,
+        "duree": 13.0
+    },
+    {
+        "date": "2026-03-26 20:10:00",
+        "utilisateur": "Papa",
+        "litres": 76.0,
+        "duree": 10.9
+    },
+    {
+        "date": "2026-04-12 19:40:00",
+        "utilisateur": "Papa",
+        "litres": 91.0,
+        "duree": 13.8
+    },
+    {
+        "date": "2026-05-16 20:15:00",
+        "utilisateur": "Papa",
+        "litres": 78.0,
+        "duree": 11.0
+    },
+    {
+        "date": "2026-05-18 20:00:00",
+        "utilisateur": "Papa",
+        "litres": 88.0,
+        "duree": 13.5
+    },
+    {
+        "date": "2026-02-08 07:20:00",
+        "utilisateur": "Léa",
+        "litres": 18.0,
+        "duree": 3.0
+    },
+    {
+        "date": "2026-02-15 07:40:00",
+        "utilisateur": "Léa",
+        "litres": 24.0,
+        "duree": 4.5
+    },
+    {
+        "date": "2026-03-04 07:10:00",
+        "utilisateur": "Léa",
+        "litres": 20.0,
+        "duree": 3.7
+    },
+    {
+        "date": "2026-03-21 07:30:00",
+        "utilisateur": "Léa",
+        "litres": 26.0,
+        "duree": 4.8
+    },
+    {
+        "date": "2026-04-16 07:15:00",
+        "utilisateur": "Léa",
+        "litres": 19.0,
+        "duree": 3.2
+    },
+    {
+        "date": "2026-05-12 07:25:00",
+        "utilisateur": "Léa",
+        "litres": 22.0,
+        "duree": 4.0
+    },
+    {
+        "date": "2026-03-01 19:15:00",
+        "utilisateur": "Omar",
+        "litres": 62.0,
+        "duree": 9.2
+    },
+    {
+        "date": "2026-03-18 19:20:00",
+        "utilisateur": "Omar",
+        "litres": 58.0,
+        "duree": 8.7
+    },
+    {
+        "date": "2026-04-03 20:05:00",
+        "utilisateur": "Omar",
+        "litres": 65.0,
+        "duree": 9.8
+    },
+    {
+        "date": "2026-04-26 19:55:00",
+        "utilisateur": "Omar",
+        "litres": 53.0,
+        "duree": 8.4
+    },
+    {
+        "date": "2026-05-14 19:35:00",
+        "utilisateur": "Omar",
+        "litres": 61.0,
+        "duree": 9.1
+    },
+    {
+        "date": "2026-05-19 19:05:00",
+        "utilisateur": "Omar",
+        "litres": 59.0,
+        "duree": 8.9
+    },
+    {
+        "date": "2026-05-27 13:18:29",
+        "utilisateur": "Papa",
+        "litres": 2.47,
+        "duree": 0.17
+    },
+    {
+        "date": "2026-05-27 13:18:47",
+        "utilisateur": "Papa",
+        "litres": 0.28,
+        "duree": 0.12
+    },
+    {
+        "date": "2026-05-27 13:21:07",
+        "utilisateur": "Maman",
+        "litres": 0.35,
+        "duree": 0.22
+    },
+    {
+        "date": "2026-05-27 13:21:22",
+        "utilisateur": "Maman",
+        "litres": 0.0,
+        "duree": 0.12
+    },
+    {
+        "date": "2026-06-02 14:38:54",
+        "utilisateur": "Papa",
+        "litres": 88.0,
+        "duree": 0.58
+    },
+    {
+        "date": "2026-06-04 11:21:42",
+        "utilisateur": "Maman",
+        "litres": 20.0,
+        "duree": 2.73
+    },
+    {
+        "date": "2026-06-04 11:27:55",
+        "utilisateur": "Alex",
+        "litres": 22.0,
+        "duree": 0.27
+    },
+    {
+        "date": "2026-06-04 11:28:08",
+        "utilisateur": "Alex",
+        "litres": 12.0,
+        "duree": 0.15
+    },
+    {
+        "date": "2026-06-04 15:04:00",
+        "utilisateur": "Alex",
+        "litres": 16.0,
+        "duree": 0.15
+    },
+    {
+        "date": "2026-06-04 15:04:44",
+        "utilisateur": "Alex",
+        "litres": 11.0,
+        "duree": 0.17
+    },
+    {
+        "date": "2026-06-04 15:15:05",
+        "utilisateur": "Julie",
+        "litres": 18.0,
+        "duree": 0.52
+    },
+    {
+        "date": "2026-06-04 15:19:29",
+        "utilisateur": "Alex",
+        "litres": 16.0,
+        "duree": 0.48
+    },
+    {
+        "date": "2026-06-04 15:30:38",
+        "utilisateur": "Alex",
+        "litres": 0.0,
+        "duree": 0.18
+    },
+    {
+        "date": "2026-06-04 15:31:18",
+        "utilisateur": "Alex",
+        "litres": 11.0,
+        "duree": 0.32
+    },
+    {
+        "date": "2026-06-04 15:31:58",
+        "utilisateur": "Papa",
+        "litres": 82.0,
+        "duree": 0.47
+    },
+    {
+        "date": "2026-06-04 15:37:45",
+        "utilisateur": "Papa",
+        "litres": 0.0,
+        "duree": 0.03
+    },
+    {
+        "date": "2026-06-04 15:38:31",
+        "utilisateur": "Papa",
+        "litres": 13.0,
+        "duree": 0.7
+    },
+    {
+        "date": "2026-06-04 15:39:21",
+        "utilisateur": "Papa",
+        "litres": 83.0,
+        "duree": 0.5
+    },
+    {
+        "date": "2026-06-04 15:44:29",
+        "utilisateur": "Papa",
+        "litres": 13.0,
+        "duree": 0.38
+    },
+    {
+        "date": "2026-06-04 15:45:43",
+        "utilisateur": "Papa",
+        "litres": 81.0,
+        "duree": 1.02
+    },
+    {
+        "date": "2026-06-04 15:48:46",
+        "utilisateur": "Papa",
+        "litres": 82.0,
+        "duree": 0.7
+    },
+    {
+        "date": "2026-06-04 15:49:10",
+        "utilisateur": "Alex",
+        "litres": 10.0,
+        "duree": 0.08
+    },
+    {
+        "date": "2026-06-04 15:51:52",
+        "utilisateur": "Papa",
+        "litres": 97.0,
+        "duree": 0.25
+    },
+    {
+        "date": "2026-06-04 15:54:56",
+        "utilisateur": "Papa",
+        "litres": 81.0,
+        "duree": 0.6
+    },
+    {
+        "date": "2026-06-04 15:56:39",
+        "utilisateur": "Papa",
+        "litres": 0.0,
+        "duree": 0.0
+    },
+    {
+        "date": "2026-06-04 15:58:17",
+        "utilisateur": "Papa",
+        "litres": 62.0,
+        "duree": 1.57
+    },
+    {
+        "date": "2026-06-04 16:01:16",
+        "utilisateur": "Papa",
+        "litres": 78.0,
+        "duree": 0.85
+    },
+    {
+        "date": "2026-06-04 16:05:05",
+        "utilisateur": "Papa",
+        "litres": 79.0,
+        "duree": 0.62
+    },
+    {
+        "date": "2026-06-04 16:06:46",
+        "utilisateur": "Papa",
+        "litres": 87.0,
+        "duree": 0.65
+    },
+    {
+        "date": "2026-06-04 16:11:42",
+        "utilisateur": "Papa",
+        "litres": 84.0,
+        "duree": 0.6
+    },
+    {
+        "date": "2026-06-04 16:12:52",
+        "utilisateur": "Alex",
+        "litres": 0.0,
+        "duree": 0.03
+    },
+    {
+        "date": "2026-06-04 16:14:47",
+        "utilisateur": "Maman",
+        "litres": 0.0,
+        "duree": 1.68
+    },
+    {
+        "date": "2026-06-04 16:14:54",
+        "utilisateur": "Alex",
+        "litres": 0.0,
+        "duree": 0.02
+    },
+    {
+        "date": "2026-06-04 16:15:05",
+        "utilisateur": "Alex",
+        "litres": 4.0,
+        "duree": 0.03
+    },
+    {
+        "date": "2026-06-04 16:16:04",
+        "utilisateur": "Alex",
+        "litres": 34.0,
+        "duree": 0.5
+    },
+    {
+        "date": "2026-06-04 16:18:27",
+        "utilisateur": "Alex",
+        "litres": 69.0,
+        "duree": 0.72
+    },
+    {
+        "date": "2026-06-04 16:19:25",
+        "utilisateur": "Alex",
+        "litres": 3.0,
+        "duree": 0.03
+    },
+    {
+        "date": "2026-06-04 16:26:32",
+        "utilisateur": "Alex",
+        "litres": 55.0,
+        "duree": 0.7
+    },
+    {
+        "date": "2026-06-04 16:27:13",
+        "utilisateur": "Alex",
+        "litres": 8.0,
+        "duree": 0.05
+    },
+    {
+        "date": "2026-06-04 16:30:36",
+        "utilisateur": "Papa",
+        "litres": 78.0,
+        "duree": 1.25
+    },
+    {
+        "date": "2026-06-04 16:31:55",
+        "utilisateur": "Alex",
+        "litres": 35.0,
+        "duree": 0.18
+    },
+    {
+        "date": "2026-06-04 16:32:34",
+        "utilisateur": "Alex",
+        "litres": 5.0,
+        "duree": 0.08
+    },
+    {
+        "date": "2026-06-04 16:35:58",
+        "utilisateur": "Papa",
+        "litres": 67.0,
+        "duree": 0.88
+    },
+    {
+        "date": "2026-06-04 16:41:05",
+        "utilisateur": "Julie",
+        "litres": 0.0,
+        "duree": 0.33
+    },
+    {
+        "date": "2026-06-04 16:44:34",
+        "utilisateur": "Papa",
+        "litres": 76.0,
+        "duree": 0.48
+    },
+    {
+        "date": "2026-06-04 16:51:42",
+        "utilisateur": "Papa",
+        "litres": 81.0,
+        "duree": 0.67
+    },
+    {
+        "date": "2026-06-04 17:03:38",
+        "utilisateur": "Maman",
+        "litres": 9.0,
+        "duree": 0.33
+    },
+    {
+        "date": "2026-06-04 17:03:55",
+        "utilisateur": "Maman",
+        "litres": 50.0,
+        "duree": 0.15
+    },
+    {
+        "date": "2026-06-04 17:12:59",
+        "utilisateur": "Maman",
+        "litres": 3.0,
+        "duree": 0.98
+    },
+    {
+        "date": "2026-06-04 17:13:25",
+        "utilisateur": "Maman",
+        "litres": 57.0,
+        "duree": 0.33
+    },
+    {
+        "date": "2026-06-04 17:15:10",
+        "utilisateur": "Papa",
+        "litres": 0.0,
+        "duree": 0.72
+    },
+    {
+        "date": "2026-06-04 17:16:24",
+        "utilisateur": "Papa",
+        "litres": 109.0,
+        "duree": 0.97
+    },
+    {
+        "date": "2026-06-04 17:18:13",
+        "utilisateur": "Alex",
+        "litres": 0.0,
+        "duree": 0.0
+    },
+    {
+        "date": "2026-06-04 17:21:15",
+        "utilisateur": "Alex",
+        "litres": 8.0,
+        "duree": 0.05
+    },
+    {
+        "date": "2026-06-04 17:22:25",
+        "utilisateur": "Papa",
+        "litres": 76.0,
+        "duree": 0.82
+    },
+    {
+        "date": "2026-06-04 17:25:24",
+        "utilisateur": "Alex",
+        "litres": 0.0,
+        "duree": 0.17
+    },
+    {
+        "date": "2026-06-04 17:30:12",
+        "utilisateur": "Alex",
+        "litres": 47.0,
+        "duree": 0.67
+    },
+    {
+        "date": "2026-06-04 17:31:52",
+        "utilisateur": "Alex",
+        "litres": 3.0,
+        "duree": 0.07
+    },
+    {
+        "date": "2026-06-04 17:34:43",
+        "utilisateur": "Papa",
+        "litres": 86.0,
+        "duree": 0.73
+    },
+    {
+        "date": "2026-06-04 17:37:15",
+        "utilisateur": "Alex",
+        "litres": 42.0,
+        "duree": 0.63
+    },
+    {
+        "date": "2026-06-04 17:38:04",
+        "utilisateur": "Alex",
+        "litres": 8.0,
+        "duree": 0.05
+    },
+    {
+        "date": "2026-06-04 17:40:48",
+        "utilisateur": "Papa",
+        "litres": 58.0,
+        "duree": 0.8
+    },
+    {
+        "date": "2026-06-04 17:47:48",
+        "utilisateur": "Papa",
+        "litres": 0.0,
+        "duree": 0.02
+    },
+    {
+        "date": "2026-06-04 17:49:30",
+        "utilisateur": "Papa",
+        "litres": 51.0,
+        "duree": 1.62
+    },
+    {
+        "date": "2026-06-11 13:01:33",
+        "utilisateur": "Alex",
+        "litres": 7.0,
+        "duree": 0.22
+    },
+    {
+        "date": "2026-06-11 13:02:26",
+        "utilisateur": "Alex",
+        "litres": 10.0,
+        "duree": 0.08
+    },
+    {
+        "date": "2026-06-11 13:09:28",
+        "utilisateur": "Alex",
+        "litres": 12.0,
+        "duree": 0.15
+    },
+    {
+        "date": "2026-06-11 13:23:21",
+        "utilisateur": "Alex",
+        "litres": 0.0,
+        "duree": 0.27
+    },
+    {
+        "date": "2026-06-11 13:24:07",
+        "utilisateur": "Alex",
+        "litres": 51.0,
+        "duree": 0.37
+    },
+    {
+        "date": "2026-06-11 13:24:55",
+        "utilisateur": "Alex",
+        "litres": 8.0,
+        "duree": 0.25
+    },
+    {
+        "date": "2026-06-11 13:40:01",
+        "utilisateur": "Alex",
+        "litres": 27.0,
+        "duree": 14.18
+    },
+    {
+        "date": "2026-06-11 13:46:52",
+        "utilisateur": "Alex",
+        "litres": 8.0,
+        "duree": 0.05
+    },
+    {
+        "date": "2026-06-11 13:50:34",
+        "utilisateur": "Alex",
+        "litres": 0.0,
+        "duree": 3.48
+    },
+    {
+        "date": "2026-06-11 13:51:44",
+        "utilisateur": "Papa",
+        "litres": 6.0,
+        "duree": 1.08
+    },
+    {
+        "date": "2026-06-11 13:51:53",
+        "utilisateur": "Alex",
+        "litres": 2.0,
+        "duree": 0.03
+    },
+    {
+        "date": "2026-06-11 13:54:52",
+        "utilisateur": "Maman",
+        "litres": 23.0,
+        "duree": 0.93
+    },
+    {
+        "date": "2026-06-11 14:19:50",
+        "utilisateur": "Maman",
+        "litres": 0.0,
+        "duree": 19.52
+    },
+    {
+        "date": "2026-06-11 14:20:26",
+        "utilisateur": "Papa",
+        "litres": 28.0,
+        "duree": 0.43
+    },
+    {
+        "date": "2026-06-11 14:31:29",
+        "utilisateur": "Maman",
+        "litres": 48.0,
+        "duree": 10.05
+    },
+    {
+        "date": "2026-06-11 14:39:15",
+        "utilisateur": "Maman",
+        "litres": 83.0,
+        "duree": 0.67
+    },
+    {
+        "date": "2026-06-11 15:40:04",
+        "utilisateur": "Papa",
+        "litres": 6.0,
+        "duree": 16.67
+    },
+    {
+        "date": "2026-06-11 16:18:58",
+        "utilisateur": "Maman",
+        "litres": 0.0,
+        "duree": 7.72
+    },
+    {
+        "date": "2026-06-11 16:22:29",
+        "utilisateur": "Julie",
+        "litres": 0.0,
+        "duree": 0.53
+    },
+    {
+        "date": "2026-06-11 16:41:33",
+        "utilisateur": "Maman",
+        "litres": 38.0,
+        "duree": 1.07
+    },
+    {
+        "date": "2026-06-11 17:20:25",
+        "utilisateur": "Maman",
+        "litres": 10.0,
+        "duree": 29.65
+    },
+    {
+        "date": "2026-06-11 17:24:00",
+        "utilisateur": "Julie",
+        "litres": 2.0,
+        "duree": 0.45
+    },
+    {
+        "date": "2026-06-11 17:24:23",
+        "utilisateur": "Alex",
+        "litres": 16.0,
+        "duree": 0.25
+    },
+    {
+        "date": "2026-06-11 17:28:08",
+        "utilisateur": "Alex",
+        "litres": 0.0,
+        "duree": 0.03
+    },
+    {
+        "date": "2026-06-11 17:34:21",
+        "utilisateur": "Alex",
+        "litres": 2.0,
+        "duree": 0.05
+    },
+    {
+        "date": "2026-06-11 17:53:44",
+        "utilisateur": "Alex",
+        "litres": 76.0,
+        "duree": 2.42
+    },
+    {
+        "date": "2026-06-11 17:53:57",
+        "utilisateur": "Alex",
+        "litres": 3.0,
+        "duree": 0.03
+    },
+    {
+        "date": "2026-06-11 18:13:26",
+        "utilisateur": "Maman",
+        "litres": 0.0,
+        "duree": 0.65
+    },
+    {
+        "date": "2026-06-11 18:15:58",
+        "utilisateur": "Julie",
+        "litres": 31.0,
+        "duree": 0.58
+    },
+    {
+        "date": "2026-06-11 18:16:23",
+        "utilisateur": "Alex",
+        "litres": 9.0,
+        "duree": 0.18
+    },
+    {
+        "date": "2026-06-11 18:18:48",
+        "utilisateur": "Alex",
+        "litres": 0.0,
+        "duree": 1.3
+    },
+    {
+        "date": "2026-06-11 20:35:50",
+        "utilisateur": "Alex",
+        "litres": 84.0,
+        "duree": 0.47
+    },
+    {
+        "date": "2026-06-11 20:36:05",
+        "utilisateur": "Alex",
+        "litres": 1.0,
+        "duree": 0.05
+    }
+]

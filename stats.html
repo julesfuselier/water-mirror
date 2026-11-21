@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <title>The Device | Water Mirror</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #05080f; --sidebar-bg: rgba(11, 15, 25, 0.85); --card-bg: rgba(18, 24, 38, 0.7);
+            --primary: #00d2ff; --success: #00ff88; --warning: #f1c40f; --danger: #ff4b2b; --text-main: #f3f4f6; --text-muted: #8b9bb4;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-color); color: var(--text-main); height: 100vh; display: flex; overflow: hidden; }
+
+        .master-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #05080f 0%, #0b1221 100%);
+            z-index: 0;
+        }
+
+        .sidebar { width: 280px; background-color: var(--sidebar-bg); backdrop-filter: blur(20px); border-right: 1px solid rgba(255,255,255,0.05); padding: 35px 25px; display: flex; flex-direction: column; z-index: 10; box-shadow: 5px 0 30px rgba(0,0,0,0.6); }
+        .logo { font-size: 1.4rem; font-weight: 800; margin-bottom: 45px; display: flex; align-items: center; gap: 12px; }
+        .logo img { height: 32px; width: auto; object-fit: contain; filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.6)); }
+        .logo span { color: var(--primary); text-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+        .menu { list-style: none; flex-grow: 1; }
+        .menu li { margin-bottom: 6px; }
+        .menu a { display: flex; align-items: center; gap: 15px; padding: 14px 18px; color: var(--text-muted); text-decoration: none; border-radius: 14px; font-weight: 600; transition: all 0.3s ease; }
+        .menu li.active a, .menu a:hover { background: rgba(0, 210, 255, 0.1); color: var(--primary); transform: translateX(5px); }
+        .logout-link { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 25px; }
+
+        .main-content { flex: 1; overflow-y: auto; z-index: 1; position: relative; scroll-behavior: smooth; }
+        
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* HERO SECTION */
+        .hero-section { min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 40px; position: relative; }
+        .hero-title { font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 15px; line-height: 1.1; }
+        .hero-title span { color: var(--primary); text-shadow: 0 0 30px rgba(0, 210, 255, 0.4); }
+        .hero-subtitle { font-size: 1.2rem; color: var(--text-muted); max-width: 600px; line-height: 1.6; margin-bottom: 40px; }
+        
+        .hero-img-container { position: relative; width: 100%; max-width: 600px; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,210,255,0.2); border: 1px solid rgba(255,255,255,0.1); }
+        .hero-img-container img { width: 100%; display: block; }
+        .glow-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, transparent 50%, #05080f 100%); }
+
+        /* FEATURE SECTIONS */
+        .feature-section { padding: 80px 60px; max-width: 1200px; margin: 0 auto; display: flex; align-items: center; gap: 60px; }
+        .feature-section.reverse { flex-direction: row-reverse; }
+        
+        .feature-text { flex: 1; }
+        .feature-text h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; color: white; }
+        .feature-text h2 i { color: var(--success); margin-right: 15px; text-shadow: 0 0 15px rgba(0,255,136,0.4); }
+        .feature-text p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 20px; }
+        
+        .feature-visual { flex: 1; background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); border-radius: 30px; padding: 40px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .feature-visual i { font-size: 5rem; color: var(--primary); text-shadow: 0 0 30px rgba(0,210,255,0.4); margin-bottom: 20px; }
+        
+        .tech-spec { display: inline-block; background: rgba(0,210,255,0.1); border: 1px solid rgba(0,210,255,0.2); color: var(--primary); padding: 6px 15px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; margin-right: 10px; margin-bottom: 10px; }
+
+        /* THE 5 SEC ROTATION FEATURE BOX */
+        .rotation-box { background: linear-gradient(135deg, rgba(241,196,15,0.1) 0%, rgba(241,196,15,0.02) 100%); border: 1px solid rgba(241,196,15,0.3); padding: 25px; border-radius: 20px; margin-top: 30px; }
+        .rotation-box h4 { color: var(--warning); font-size: 1.2rem; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="master-bg"></div>
+
+    <nav class="sidebar">
+        <div class="logo"><img src="img/logo.png" alt="Logo"> Water<span>Mirror</span></div>
+        <ul class="menu">
+            <li><a id="nav-dash" href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a id="nav-rank" href="#"><i class="fas fa-trophy"></i> Leaderboard</a></li>
+            <li><a id="nav-impact" href="#"><i class="fas fa-globe"></i> Global Impact</a></li>
+            <li><a id="nav-challenges" href="#"><i class="fas fa-medal"></i> Challenges</a></li>
+            <li><a id="nav-shop" href="#"><i class="fas fa-shopping-bag"></i> Shop</a></li>
+            <li class="active"><a id="nav-device" href="#"><i class="fas fa-microchip"></i> The Device</a></li>
+            <li><a href="#" onclick="resetGame()" style="color: var(--danger);"><i class="fas fa-undo"></i> Reset Game</a></li>
+            <li class="logout-link"><a href="accueil.html"><i class="fas fa-sign-out-alt"></i> Quit</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content" id="main-scroll">
+        
+        <section class="hero-section reveal">
+            <h1 class="hero-title">Meet the <span>Hardware</span></h1>
+            <p class="hero-subtitle">The core of the Water Mirror ecosystem. A sleek, waterproof IoT device powered by an ESP32 microcontroller, designed to integrate seamlessly into any bathroom.</p>
+            
+            <div class="hero-img-container">
+                <div style="background: rgba(0, 210, 255, 0.1); height: 350px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-shower" style="font-size: 8rem; color: var(--primary); text-shadow: 0 0 50px rgba(0, 210, 255, 0.5);"></i>
+                </div>
+                <div class="glow-overlay"></div>
+            </div>
+        </section>
+
+        <section class="feature-section reveal">
+            <div class="feature-text">
+                <h2><i class="fas fa-cogs"></i> ESP32 Powered Precision</h2>
+                <p>Equipped with an advanced internal water flow sensor, the device measures your exact water consumption in real-time. The powerful ESP32 chip connects to your home Wi-Fi to silently push data directly to your local Python server.</p>
+                <div class="tech-specs">
+                    <span class="tech-spec">Wi-Fi Sync</span>
+                    <span class="tech-spec">C++ Firmware</span>
+                    <span class="tech-spec">Real-Time Data</span>
+                </div>
+            </div>
+            <div class="feature-visual">
+                <i class="fas fa-microchip"></i>
+                <h3 style="font-size: 1.5rem; color: white;">Smart Core</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">Ultra-low latency connection to the dashboard.</p>
+            </div>
+        </section>
+
+        <section class="feature-section reverse reveal">
+            <div class="feature-text">
+                <h2><i class="fas fa-sync-alt"></i> 100% Adaptable Design</h2>
+                <p>Every bathroom is different. That's why we engineered the Water Mirror device to be installed exactly where you need it: whether directly attached to the upper shower head, or connected to the lower handheld shower outlet.</p>
+                
+                <div class="rotation-box">
+                    <h4><i class="fas fa-mobile-alt"></i> Smart Screen Rotation</h4>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 0.95rem; margin-bottom: 0;">Installed it upside down for a better fit? No problem. Simply <strong>press and hold the Select button for 5 seconds</strong>. The digital display will instantly rotate 180°, allowing you to read your live stats comfortably in any configuration.</p>
+                </div>
+            </div>
+            <div class="feature-visual" style="border-color: rgba(241,196,15,0.3);">
+                <i class="fas fa-retweet" style="color: var(--warning); text-shadow: 0 0 30px rgba(241,196,15,0.4);"></i>
+                <h3 style="font-size: 1.5rem; color: white;">Flip Display</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">Hardware designed to fit your environment.</p>
+            </div>
+        </section>
+
+        <section class="feature-section reveal" style="padding-bottom: 100px;">
+            <div class="feature-text">
+                <h2><i class="fas fa-gamepad" style="color: var(--primary);"></i> Gamification Engine</h2>
+                <p>Once you step out of the shower, the hardware hands off the baton to our Web SaaS. Your liters are converted into XP, Eco-Coins, and Fire Streaks, unlocking cosmetic rewards and funding real-world NGO projects.</p>
+            </div>
+            <div class="feature-visual" style="border-color: rgba(0,210,255,0.3);">
+                <i class="fas fa-chart-pie" style="color: var(--primary);"></i>
+                <h3 style="font-size: 1.5rem; color: white;">SaaS Integration</h3>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 10px;">From hardware sensors to digital impact.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Scroll Reveal Animation logic
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            var windowHeight = window.innerHeight;
+            for (var i = 0; i < reveals.length; i++) {
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) { reveals[i].classList.add('active'); }
+            }
+        }
+        
+        // Listen to scrolling inside the main-content div
+        document.getElementById('main-scroll').addEventListener('scroll', reveal);
+        // Trigger once on load
+        setTimeout(reveal, 100);
+
+        // Routing Logic
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUser = urlParams.get('user') || 'Alex';
+
+        document.getElementById('nav-dash').href = `index.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-rank').href = `ranking.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-impact').href = `impact.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-challenges').href = `challenges.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-shop').href = `shop.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-device').href = `device.html?user=${encodeURIComponent(currentUser)}`;
+
+        async function resetGame() {
+            if (confirm("🚨 WARNING HERO! Are you sure you want to reset the game? You will permanently lose your shower history, XP, Eco-Coins, and shop items.")) {
+                try {
+                    await fetch("http://localhost:5001/api/reset");
+                    localStorage.clear();
+                    window.location.href = "accueil.html";
+                } catch (error) { alert("Technical error."); }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Water Mirror | Select Profile</title>
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- HIGH-END DARK THEME - MOBILE FIRST --- */
+        :root {
+            --bg-color: #05080f;
+            --card-bg: rgba(18, 24, 38, 0.75);
+            --primary: #00d2ff; 
+            --success: #00ff88; 
+            --warning: #f1c40f; 
+            --danger: #ff4b2b;
+            --text-main: #f3f4f6;
+            --text-muted: #8b9bb4;
+            --glass-heavy: rgba(11, 15, 25, 0.98);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden; /* Prevent pull-to-refresh on mobile */
+            height: 100dvh; /* Dynamic viewport height for mobile browsers */
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(180deg, rgba(5,8,15,0.4) 0%, rgba(5,8,15,0.95) 100%), url('img/fond2.png') no-repeat center center;
+            background-size: cover;
+            /* Applying blur to mimic the app-active state from before */
+            backdrop-filter: blur(25px) brightness(0.35);
+        }
+
+        /* --- 2. MAIN APP (PROFILE SELECTION) --- */
+        .main-app {
+            position: relative;
+            z-index: 10;
+            display: flex; flex-direction: column;
+            height: 100dvh;
+            padding: 0 20px;
+        }
+
+        /* Mobile Header */
+        .home-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0;
+            margin-top: env(safe-area-inset-top); /* Notch support */
+        }
+        .main-logo { height: 35px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5)); }
+        
+        .family-impact {
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(15px); padding: 8px 16px; border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.1); font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 8px;
+        }
+        .family-impact strong { font-family: 'Rajdhani', sans-serif; color: var(--success); font-size: 1.2rem; }
+
+        /* Selection Area */
+        .selection-area {
+            flex: 1;
+            display: flex; flex-direction: column;
+            overflow-y: auto; /* Allow scroll if many profiles */
+            padding-bottom: 30px;
+            padding-top: 20px;
+        }
+
+        .welcome-text { text-align: center; margin-bottom: 50px; flex-shrink: 0; }
+        .welcome-text h2 { font-size: 1.8rem; font-weight: 800; line-height: 1.2; text-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .welcome-text p { font-size: 0.9rem; color: var(--text-muted); margin-top: 8px; }
+
+        /* Mobile Grid */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .profile-item {
+            text-decoration: none; color: var(--text-main);
+            display: flex; flex-direction: column; align-items: center;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 15px 10px;
+            backdrop-filter: blur(20px);
+            transition: all 0.2s;
+        }
+        .profile-item:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
+
+        .avatar-circle {
+            width: 60px; height: 60px; border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; font-weight: 800; margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+        }
+
+        .profile-name { font-weight: 700; font-size: 1rem; text-transform: uppercase; text-align: center; overflow: hidden; text-overflow: ellipsis; max-width: 100%; white-space: nowrap;}
+
+        /* Manage Button */
+        .btn-manage-container {
+            display: flex; justify-content: center; margin-top: 35px;
+        }
+        .btn-manage {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-main); padding: 16px 30px; border-radius: 50px;
+            font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 10px;
+            width: 100%; max-width: 300px; justify-content: center;
+        }
+
+        /* --- MOBILE BOTTOM SHEET (Instead of Side Panel) --- */
+        .manage-panel {
+            position: fixed; bottom: -100%; left: 0; width: 100%;
+            background: var(--glass-heavy);
+            backdrop-filter: blur(40px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px 30px 0 0;
+            padding: 30px 25px;
+            padding-bottom: calc(30px + env(safe-area-inset-bottom));
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1);
+            z-index: 100; box-shadow: 0 -15px 40px rgba(0,0,0,0.8);
+        }
+        .manage-panel.active { bottom: 0; }
+        
+        .panel-drag-handle {
+            width: 40px; height: 5px; background: rgba(255,255,255,0.2);
+            border-radius: 5px; margin: 0 auto 20px auto;
+        }
+
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .panel-header h3 { font-size: 1.2rem; font-weight: 800; }
+        .btn-close-icon { background: rgba(255,255,255,0.1); border: none; color: white; width: 35px; height: 35px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+
+        .add-member-box { display: flex; gap: 10px; margin-bottom: 25px; }
+        .add-member-box input { flex: 1; padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.5); color: white; font-size: 1rem; outline: none; }
+        .btn-add { background: var(--primary); color: #000; border: none; padding: 0 20px; border-radius: 16px; font-weight: 800; font-size: 1rem; }
+
+        .edit-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .edit-item span { font-weight: 600; font-size: 1.1rem; }
+        .btn-del { background: rgba(255, 75, 43, 0.15); color: var(--danger); border: none; width: 40px; height: 40px; border-radius: 12px; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; }
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+            z-index: 90; opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        /* Larger screens (tablets/desktops) adaptation */
+        @media (min-width: 768px) {
+            .profile-grid { grid-template-columns: repeat(4, 1fr); max-width: 800px; gap: 40px; }
+            .avatar-circle { width: 130px; height: 130px; font-size: 3.5rem; }
+            
+            /* On desktop, manage panel slides from the right */
+            .manage-panel { 
+                position: fixed; right: -450px; left: auto; top: 0; bottom: auto; 
+                width: 420px; height: 100%; border-radius: 0;
+                border-left: 1px solid rgba(255,255,255,0.05); border-top: none;
+                transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: -15px 0 50px rgba(0,0,0,0.6);
+            }
+            .manage-panel.active { right: 0; bottom: auto; transform: none; left: auto; }
+            .panel-drag-handle { display: none; } /* Hide mobile drag handle on desktop */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-app" id="mainApp">
+        <header class="home-header">
+            <img src="img/logo.png" alt="Water Mirror Logo" class="main-logo">
+            <div class="family-impact">
+                <i class="fas fa-globe-europe" style="color: var(--primary);"></i>
+                <span id="global-money">0.00</span> €
+            </div>
+        </header>
+
+        <section class="selection-area">
+            <div class="welcome-text">
+                <h2>Who is showering?</h2>
+                <p>Tap your profile to sign in.</p>
+            </div>
+
+            <div id="profile-grid" class="profile-grid">
+                <!-- Profiles injected here by JS -->
+            </div>
+
+            <div class="btn-manage-container">
+                <button onclick="toggleManage()" class="btn-manage">
+                    <i class="fas fa-users-cog"></i> Manage Family
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Overlay & Bottom Sheet -->
+    <div class="modal-overlay" id="modal-overlay" onclick="toggleManage()"></div>
+    <div id="manage-panel" class="manage-panel">
+        <div class="panel-drag-handle"></div>
+        <div class="panel-header">
+            <h3>Family Settings</h3>
+            <button onclick="toggleManage()" class="btn-close-icon"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="panel-body">
+            <div class="add-member-box">
+                <input type="text" id="new-member-name" placeholder="New name...">
+                <button onclick="addMember()" class="btn-add"><i class="fas fa-plus"></i></button>
+            </div>
+            <div id="member-list-edit" style="max-height: 40vh; overflow-y: auto;">
+                <!-- Members edit list injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 2. PROFILE & DATA MANAGEMENT ---
+        const API_URL = "http://localhost:5001/api/data";
+        
+        const avatarColors = ['#00d2ff', '#00ff88', '#f1c40f', '#b128ff', '#ff4b2b'];
+        let members = JSON.parse(localStorage.getItem('ecoFamily'));
+        if (!members || members.length === 0) {
+            members = ["Papa", "Maman", "Alex", "Julie"];
+            localStorage.setItem('ecoFamily', JSON.stringify(members));
+        }
+
+        async function fetchGlobalImpact() {
+            try {
+                const response = await fetch(API_URL);
+                if (!response.ok) throw new Error();
+                const allData = await response.json();
+                
+                let totalSaved = 0;
+                allData.forEach(shower => {
+                    totalSaved += Math.max(0, 60 - shower.litres);
+                });
+                
+                document.getElementById('global-money').innerText = (totalSaved * (1.05 / 60)).toFixed(2);
+            } catch (e) { 
+                console.log("Python server offline, loading default prize pool."); 
+            }
+        }
+
+        function render() {
+            const grid = document.getElementById('profile-grid');
+            const editList = document.getElementById('member-list-edit');
+            
+            grid.innerHTML = members.map((m, index) => {
+                const color = avatarColors[index % avatarColors.length];
+                return `
+                <a href="index.html?user=${encodeURIComponent(m)}" class="profile-item">
+                    <div class="avatar-circle" style="border-color: ${color}40; color: ${color}">
+                        ${m.charAt(0).toUpperCase()}
+                    </div>
+                    <span class="profile-name">${m}</span>
+                </a>`;
+            }).join('');
+
+            editList.innerHTML = members.map((m, index) => `
+                <div class="edit-item">
+                    <span>${m}</span>
+                    <button onclick="deleteMember(${index})" class="btn-del"><i class="fas fa-trash"></i></button>
+                </div>`).join('');
+        }
+
+        function addMember() {
+            const input = document.getElementById('new-member-name');
+            if(input.value.trim()) {
+                members.push(input.value.trim());
+                localStorage.setItem('ecoFamily', JSON.stringify(members));
+                input.value = "";
+                render();
+            }
+        }
+
+        function deleteMember(index) {
+            if(confirm(`Permanently delete ${members[index]}?`)) {
+                members.splice(index, 1);
+                localStorage.setItem('ecoFamily', JSON.stringify(members));
+                render();
+            }
+        }
+
+        function toggleManage() {
+            document.getElementById('manage-panel').classList.toggle('active');
+            document.getElementById('modal-overlay').classList.toggle('active');
+        }
+
+        render();
+        fetchGlobalImpact();
+        setInterval(fetchGlobalImpact, 5000); // Live update of the global money
+    </script>
+</body>
+</html>

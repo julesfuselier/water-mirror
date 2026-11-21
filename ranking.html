@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <title>Ranking | Water Mirror</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- HIGH-END DARK THEME VARIABLES --- */
+        :root {
+            --bg-color: #05080f;
+            --sidebar-bg: #0b0f19;
+            --card-bg: rgba(18, 24, 38, 0.65);
+            --primary: #00d2ff;
+            --success: #00ff88;
+            --warning: #f1c40f;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+            --danger: #ff4b2b;
+            --text-main: #f3f4f6;
+            --text-muted: #64748b;
+            --glass-heavy: rgba(11, 15, 25, 0.95);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); display: flex; min-height: 100dvh; overflow-x: hidden; }
+
+        /* --- THE DYNAMIC NATURE BACKGROUND --- */
+        .master-bg {
+            position: fixed; top: -5%; left: -5%; width: 110%; height: 110%;
+            background: url('img/fond.png') no-repeat center bottom; 
+            background-size: cover; z-index: 0;
+            filter: blur(10px) brightness(0.4); 
+        }
+
+        /* --- MOBILE BOTTOM NAVIGATION (FAB Style) --- */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--glass-heavy); backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-evenly; align-items: center;
+            padding: 10px 0; padding-bottom: calc(10px + env(safe-area-inset-bottom));
+            z-index: 100;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center; color: var(--text-muted);
+            text-decoration: none; font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            width: 60px;
+        }
+        .nav-item i { font-size: 1.3rem; margin-bottom: 4px; transition: color 0.3s; }
+        .nav-item.active { color: white; }
+        .nav-item.active i { color: var(--primary); text-shadow: 0 0 15px rgba(0, 210, 255, 0.5); }
+        
+        .nav-fab-container { position: relative; top: -25px; z-index: 101; }
+        .nav-fab {
+            background: linear-gradient(135deg, var(--primary), #0088ff);
+            width: 65px; height: 65px; border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: white; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; text-decoration: none;
+            box-shadow: 0 10px 25px rgba(0, 210, 255, 0.4); border: 5px solid var(--bg-color);
+        }
+        .nav-fab i { font-size: 1.6rem; margin-bottom: 2px; }
+
+        /* --- DESKTOP SIDEBAR --- */
+        .sidebar { display: none; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { flex: 1; padding: 20px; padding-bottom: 100px; display: flex; flex-direction: column; z-index: 1; position: relative; }
+        
+        .top-header { display: flex; flex-direction: column; gap: 10px; margin-bottom: 30px; }
+        .date-text { color: var(--success); font-size: 0.75rem; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; text-shadow: 0 0 10px rgba(0,255,136,0.4); }
+        .ranking-title { font-size: 2rem; font-weight: 800; letter-spacing: -1px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); line-height: 1.1; }
+        .ranking-title span { color: var(--warning); text-shadow: 0 0 20px rgba(241, 196, 15, 0.4); }
+        
+        .squad-badge { 
+            background: rgba(0, 210, 255, 0.08); backdrop-filter: blur(10px); border: 1px solid rgba(0, 210, 255, 0.3); 
+            padding: 8px 15px; border-radius: 50px; font-weight: 800; color: var(--primary); font-size: 0.75rem; 
+            display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 0 20px rgba(0, 210, 255, 0.15); align-self: flex-start;
+        }
+
+        /* --- RESPONSIVE PODIUM --- */
+        .podium-container { display: flex; justify-content: center; align-items: flex-end; gap: 10px; margin-bottom: 40px; height: 220px; }
+        
+        @keyframes hologramRise { 0% { transform: translateY(50px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+        
+        .podium-column { 
+            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0.8) 100%); 
+            border: 1px solid rgba(255,255,255,0.1); border-bottom: none; border-radius: 16px 16px 0 0; 
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 15px 5px; 
+            width: 30%; position: relative; backdrop-filter: blur(10px); 
+            animation: hologramRise 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; 
+        }
+        
+        .podium-column.second { height: 160px; border-top: 2px solid var(--silver); color: var(--silver); animation-delay: 0.1s; }
+        .podium-column.third { height: 130px; border-top: 2px solid var(--bronze); color: var(--bronze); animation-delay: 0.2s; }
+        .podium-column.first { height: 200px; border-top: 2px solid var(--warning); color: var(--warning); animation-delay: 0s; z-index: 2; }
+        
+        .podium-avatar { 
+            width: 50px; height: 50px; border-radius: 50%; border: 3px solid currentColor; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 800; 
+            position: absolute; top: -25px; background: rgba(5,8,15,0.8); backdrop-filter: blur(10px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.6); text-shadow: 0 0 10px currentColor; 
+        }
+        .podium-crown { position: absolute; top: -55px; font-size: 1.8rem; color: var(--warning); transform: rotate(-15deg); filter: drop-shadow(0 0 15px rgba(241, 196, 15, 0.8)); }
+        
+        .podium-name { font-weight: 800; font-size: 0.75rem; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 1px; color: white; text-shadow: 0 2px 5px black; text-align: center; overflow: hidden; text-overflow: ellipsis; max-width: 100%;}
+        .podium-score { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.4rem; margin-bottom: 5px; line-height: 1; text-shadow: 0 0 15px currentColor; }
+        .podium-score span { font-family: 'Poppins', sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.6); font-weight: 600; margin-left: 2px; }
+        .podium-number { font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 2.5rem; opacity: 0.15; position: absolute; bottom: 5px; line-height: 1; }
+
+        /* --- RESPONSIVE LIST (Replacing Table for Mobile) --- */
+        .ranking-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .ranking-item { 
+            background: var(--card-bg); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); 
+            border-radius: 20px; padding: 15px; display: grid; grid-template-columns: auto 1fr auto; 
+            align-items: center; gap: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); transition: transform 0.2s;
+        }
+        .ranking-item.current-user { background: rgba(0, 210, 255, 0.08); border-left: 4px solid var(--primary); }
+        
+        .rank-number { font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 1.4rem; width: 30px; text-align: center; }
+        
+        .item-details { display: flex; flex-direction: column; gap: 5px; overflow: hidden; }
+        .item-header { display: flex; align-items: center; gap: 10px; }
+        .item-avatar { width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; border: 2px solid; background: rgba(0,0,0,0.6); flex-shrink: 0; }
+        .item-name { font-size: 1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .title-tag { font-size: 0.6rem; background: rgba(255,255,255,0.1); padding: 3px 8px; border-radius: 6px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; }
+        .title-tag.me { background: var(--primary); color: #000; box-shadow: 0 0 10px rgba(0, 210, 255, 0.4); }
+        
+        .item-stats { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 5px; }
+        .stat-pill { display: flex; align-items: center; gap: 5px; font-size: 0.75rem; font-weight: 600; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 8px;}
+        .stat-pill i.fa-fire { color: var(--danger); }
+        .stat-pill i.fa-tint { color: var(--warning); }
+
+        .item-score { text-align: right; display: flex; flex-direction: column; align-items: flex-end; }
+        .score-bold { font-family: 'Rajdhani', sans-serif; color: white; font-weight: 700; font-size: 1.6rem; line-height: 1; }
+        .score-bold span { font-family: 'Poppins', sans-serif; font-size: 0.7rem; color: var(--text-muted); }
+        .vol-bar-bg { width: 70px; height: 6px; background: rgba(0,0,0,0.5); border-radius: 10px; margin-top: 6px; overflow: hidden; }
+        .vol-bar-fill { height: 100%; border-radius: 10px; transition: width 1s; }
+        .vol-good { background: var(--success); box-shadow: 0 0 10px var(--success); }
+        .vol-warn { background: var(--warning); box-shadow: 0 0 10px var(--warning); }
+        .vol-bad { background: var(--danger); box-shadow: 0 0 10px var(--danger); }
+
+        .action-buttons { display: flex; gap: 10px; margin-top: 20px; justify-content: center; }
+        .btn-action { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 12px 20px; border-radius: 16px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px; flex: 1; justify-content: center; backdrop-filter: blur(10px); }
+        .btn-action.share { background: rgba(0, 210, 255, 0.1); color: var(--primary); border-color: var(--primary); }
+
+        /* --- DESKTOP ADAPTATION --- */
+        @media (min-width: 1024px) {
+            .bottom-nav { display: none; }
+            .sidebar {
+                display: flex; flex-direction: column; width: 280px; background-color: var(--sidebar-bg);
+                border-right: 1px solid rgba(255, 255, 255, 0.05); padding: 35px 25px; box-shadow: 5px 0 30px rgba(0, 0, 0, 0.5); z-index: 10;
+            }
+            .logo { font-size: 1.4rem; font-weight: 800; margin-bottom: 45px; display: flex; align-items: center; gap: 12px; }
+            .logo img { height: 32px; filter: drop-shadow(0 0 8px rgba(0, 210, 255, 0.6)); }
+            .logo span { color: var(--primary); text-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+            
+            .menu { list-style: none; flex-grow: 1; }
+            .menu a { display: flex; align-items: center; gap: 15px; padding: 14px 18px; color: var(--text-muted); text-decoration: none; border-radius: 14px; font-weight: 600; transition: all 0.3s; }
+            .menu li.active a, .menu a:hover { background: rgba(0, 210, 255, 0.08); color: var(--primary); transform: translateX(5px); }
+            .logout-link { margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 25px; }
+
+            .main-content { padding: 40px; }
+            .top-header { flex-direction: row; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; }
+            .ranking-title { font-size: 3.5rem; }
+            .squad-badge { font-size: 0.95rem; padding: 12px 25px; }
+
+            /* Desktop Podium */
+            .podium-container { gap: 30px; height: 340px; margin-bottom: 60px; }
+            .podium-column { width: 190px; padding: 25px 20px; border-radius: 20px 20px 0 0; }
+            .podium-column.second { height: 240px; }
+            .podium-column.third { height: 200px; }
+            .podium-column.first { height: 300px; }
+            .podium-avatar { width: 90px; height: 90px; top: -45px; font-size: 2.2rem; border-width: 4px; }
+            .podium-crown { top: -85px; font-size: 2.5rem; }
+            .podium-name { font-size: 1.3rem; margin-bottom: 5px; }
+            .podium-score { font-size: 2.8rem; margin-bottom: 15px; }
+            .podium-score span { font-size: 1.1rem; }
+            .podium-number { font-size: 4rem; bottom: 10px; }
+
+            /* Desktop List items look more like table rows */
+            .ranking-list { display: flex; flex-direction: column; gap: 8px; }
+            .ranking-item { grid-template-columns: 80px 1fr auto auto; padding: 20px 30px; border-radius: 24px; gap: 30px; }
+            .rank-number { font-size: 1.8rem; }
+            .item-stats { margin-top: 0; gap: 20px; }
+            .stat-pill { background: transparent; font-size: 0.9rem; padding: 0; }
+            .stat-pill i { font-size: 1.2rem; }
+            .vol-bar-bg { width: 120px; }
+            .score-bold { font-size: 2rem; }
+            
+            .action-buttons { justify-content: flex-start; margin-top: 30px; max-width: 400px;}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="master-bg"></div>
+
+    <nav class="sidebar">
+        <div class="logo"><img src="img/logo.png" alt="Logo"> Water<span>Mirror</span></div>
+        <ul class="menu">
+            <li><a id="nav-dash" href="#"><i class="fas fa-home"></i> Home</a></li>
+            <li class="active"><a id="nav-rank" href="#"><i class="fas fa-trophy"></i> Ranking</a></li>
+            <li><a id="nav-impact" href="#"><i class="fas fa-globe"></i> Global Impact</a></li>
+            <li><a id="nav-challenges" href="#"><i class="fas fa-medal"></i> Challenges</a></li>
+            <li><a id="nav-about" href="#"><i class="fas fa-info-circle"></i> About</a></li>
+            <li><a id="nav-device" href="#"><i class="fas fa-wrench"></i> Device & Beta</a></li>
+            <li class="logout-link"><a href="accueil.html"><i class="fas fa-sign-out-alt"></i> Quit</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div>
+                <div class="date-text" id="status-text"><i class="fas fa-satellite-dish"></i> Syncing Live...</div>
+                <h1 class="ranking-title">Hall of <span>Fame</span></h1>
+            </div>
+            <div class="squad-badge"><i class="fas fa-bolt"></i> Local Server Active</div>
+        </header>
+
+        <section class="podium-container">
+            <div class="podium-column second" id="podium-2">
+                <div class="podium-avatar" id="p2-avatar">?</div>
+                <div class="podium-name" id="p2-name">???</div>
+                <div class="podium-score" id="p2-score">--<span>L</span></div>
+                <div class="podium-number">2</div>
+            </div>
+            <div class="podium-column first" id="podium-1">
+                <i class="fas fa-crown podium-crown"></i>
+                <div class="podium-avatar" id="p1-avatar">?</div>
+                <div class="podium-name" id="p1-name">???</div>
+                <div class="podium-score" id="p1-score">--<span>L</span></div>
+                <div class="podium-number">1</div>
+            </div>
+            <div class="podium-column third" id="podium-3">
+                <div class="podium-avatar" id="p3-avatar">?</div>
+                <div class="podium-name" id="p3-name">???</div>
+                <div class="podium-score" id="p3-score">--<span>L</span></div>
+                <div class="podium-number">3</div>
+            </div>
+        </section>
+
+        <!-- Replaced table with responsive list -->
+        <section class="ranking-list" id="ranking-rows-container">
+            <!-- Injected by JS -->
+        </section>
+
+        <!-- New functionality -->
+        <div class="action-buttons">
+            <button class="btn-action share" onclick="shareScore()"><i class="fas fa-share-alt"></i> Share</button>
+            <button class="btn-action" onclick="resetGame()" style="color: var(--danger); border-color: rgba(255,75,43,0.3);"><i class="fas fa-undo"></i> Reset Family</button>
+        </div>
+    </main>
+
+    <!-- MOBILE BOTTOM NAVIGATION (FAB Pattern) -->
+    <nav class="bottom-nav">
+        <a href="accueil.html" class="nav-item"><i class="fas fa-user-circle"></i> Profiles</a>
+        <a id="mob-nav-rank" href="#" class="nav-item active"><i class="fas fa-trophy"></i> Rank</a>
+        
+        <div class="nav-fab-container">
+            <a id="mob-nav-dash" href="#" class="nav-fab"><i class="fas fa-home"></i> Home</a>
+        </div>
+        
+        <a id="mob-nav-device" href="#" class="nav-item"><i class="fas fa-wrench"></i> Device</a>
+        <a id="mob-nav-challenges" href="#" class="nav-item"><i class="fas fa-medal"></i> Quests</a>
+    </nav>
+
+    <script>
+        const API_URL = "http://localhost:5001/api/data";
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUser = urlParams.get('user') || 'Alex';
+
+        // Routing
+        document.getElementById('nav-dash').href = `index.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-rank').href = `ranking.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-impact').href = `impact.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-challenges').href = `challenges.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-about').href = `about.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('nav-device').href = `device.html?user=${encodeURIComponent(currentUser)}`;
+        
+        document.getElementById('mob-nav-dash').href = `index.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('mob-nav-device').href = `device.html?user=${encodeURIComponent(currentUser)}`;
+        document.getElementById('mob-nav-challenges').href = `challenges.html?user=${encodeURIComponent(currentUser)}`;
+
+        const familyList = JSON.parse(localStorage.getItem('ecoFamily')) || ["Papa", "Maman", "Alex", "Julie"];
+
+        function getTitle(avg) {
+            if (avg === 80) return "Waiting..."; 
+            if (avg <= 20) return "Aqua Legend";
+            if (avg <= 35) return "Eco-Guardian";
+            if (avg <= 50) return "Splash Rookie";
+            return "Water Waster";
+        }
+
+        function getBarClass(avg) {
+            if (avg <= 35) return "vol-good";
+            if (avg <= 55) return "vol-warn";
+            return "vol-bad";
+        }
+
+        function getAvatarColor(rank) {
+            if (rank === 1) return 'var(--warning)';
+            if (rank === 2) return 'var(--silver)';
+            if (rank === 3) return 'var(--bronze)';
+            return 'var(--text-muted)';
+        }
+
+        async function fetchRankingData() {
+            const urlTest = new URLSearchParams(window.location.search);
+            const isTestMode = urlTest.get('test') === '1';
+            if (isTestMode) {
+                let squadData = [
+                    { name: 'Alex', avg: 18, streak: 5, title: getTitle(18) },
+                    { name: 'Julie', avg: 22, streak: 3, title: getTitle(22) },
+                    { name: 'Papa', avg: 35, streak: 2, title: getTitle(35) },
+                    { name: 'Maman', avg: 40, streak: 0, title: getTitle(40) }
+                ];
+                renderRankingUI(squadData);
+                document.getElementById('status-text').innerHTML = `<i class=\"fas fa-vial\"></i> Test Mode Active`;
+                document.getElementById('status-text').style.color = "var(--primary)";
+            } else {
+                try {
+                    const response = await fetch(API_URL);
+                    if (!response.ok) throw new Error("Server unreachable");
+                    const allData = await response.json();
+
+                    document.getElementById('status-text').innerHTML = `<i class=\"fas fa-link\"></i> Live Connected`;
+                    document.getElementById('status-text').style.color = "var(--success)";
+
+                    let squadData = [];
+
+                    familyList.forEach(memberName => {
+                        const userShowers = allData.filter(s => s.utilisateur.toLowerCase() === memberName.toLowerCase());
+                        let avgLiters = 80; let streak = 0;
+
+                        if (userShowers.length > 0) {
+                            const sumLiters = userShowers.reduce((acc, val) => acc + val.litres, 0);
+                            avgLiters = sumLiters / userShowers.length;
+
+                            for (let i = userShowers.length - 1; i >= 0; i--) {
+                                if (userShowers[i].litres <= 40 && userShowers[i].litres > 0) streak++;
+                                else break;
+                            }
+                        }
+
+                        squadData.push({ name: memberName, avg: avgLiters, streak: streak, title: getTitle(avgLiters) });
+                    });
+
+                    squadData.sort((a, b) => a.avg - b.avg);
+                    renderRankingUI(squadData);
+
+                } catch (error) {
+                    document.getElementById('status-text').innerHTML = `<i class=\"fas fa-unlink\"></i> Offline (ESP32 Disconnected)`;
+                    document.getElementById('status-text').style.color = "var(--danger)";
+
+                    let fallbackData = familyList.map(name => ({ name: name, avg: 80, streak: 0, title: "Disconnected" }));
+                    renderRankingUI(fallbackData);
+                }
+            }
+        }
+
+        function renderRankingUI(squadData) {
+            // Podium
+            const positions = [1, 2, 3];
+            positions.forEach(pos => {
+                const idx = pos - 1;
+                if (squadData[idx] && squadData[idx].avg !== 80) {
+                    document.getElementById(`p${pos}-name`).innerText = squadData[idx].name;
+                    document.getElementById(`p${pos}-score`).innerHTML = `${squadData[idx].avg.toFixed(0)}<span>L</span>`;
+                    document.getElementById(`p${pos}-avatar`).innerText = squadData[idx].name.charAt(0).toUpperCase();
+                } else {
+                    document.getElementById(`p${pos}-name`).innerText = "???";
+                    document.getElementById(`p${pos}-score`).innerHTML = `--<span>L</span>`;
+                    document.getElementById(`p${pos}-avatar`).innerText = "-";
+                }
+            });
+
+            // Flex List
+            const container = document.getElementById('ranking-rows-container');
+            container.innerHTML = squadData.map((player, index) => {
+                const rank = index + 1;
+                const isYou = player.name.toLowerCase() === currentUser.toLowerCase();
+                const rankColor = getAvatarColor(rank);
+                const displayAvg = player.avg === 80 ? "---" : player.avg.toFixed(1);
+                const fillPercent = player.avg === 80 ? 0 : Math.min(100, (player.avg / 80) * 100);
+                const barClass = getBarClass(player.avg);
+
+                return `
+                    <div class="ranking-item ${isYou ? 'current-user' : ''}">
+                        <div class="rank-number" style="color: ${rankColor}">#${rank}</div>
+                        
+                        <div class="item-details">
+                            <div class="item-header">
+                                <div class="item-avatar" style="border-color: ${rankColor}; color: ${rankColor}; box-shadow: 0 0 10px ${rankColor}50;">
+                                    ${player.name.charAt(0).toUpperCase()}
+                                </div>
+                                <div class="item-name">${player.name}</div>
+                                ${isYou ? `<span class="title-tag me">YOU</span>` : ''}
+                                <span class="title-tag hidden-mobile">${player.title}</span>
+                            </div>
+                            <div class="item-stats">
+                                <span class="stat-pill"><i class="fas fa-fire"></i> ${player.streak} days</span>
+                            </div>
+                        </div>
+
+                        <div class="item-score">
+                            <div class="score-bold">${displayAvg}<span>L / avg</span></div>
+                            <div class="vol-bar-bg">
+                                <div class="vol-bar-fill ${barClass}" style="width: ${fillPercent}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- SHARE ---
+        function shareScore() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Water Mirror Score',
+                    text: `I'm competing on Water Mirror with my family! My eco-profile is on point. 💧🌍`,
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                alert("Sharing is not supported on this browser, but you're still a hero! 💧");
+            }
+        }
+
+        async function resetGame() {
+            if (confirm("🚨 WARNING! Do you really want to reset the family?")) {
+                try {
+                    await fetch("http://localhost:5001/api/reset");
+                    localStorage.clear();
+                    alert("🧹 System reset.");
+                    window.location.href = "accueil.html";
+                } catch (error) {
+                    alert("Local server connection error.");
+                }
+            }
+        }
+
+        fetchRankingData();
+        const isTestModeCheck = urlParams.get('test') === '1';
+        if (!isTestModeCheck) setInterval(fetchRankingData, 5000);
+    </script>
+</body>
+</html>

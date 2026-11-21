@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <title>EcoShower | Manage Family</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="dashboard-body"> <div class="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-top">
+                <div class="logo">
+                    <h2>Eco<span>Shower</span></h2>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="accueil.html"><i class="fas fa-arrow-left"></i> Back to Home</a></li>
+                <li class="active"><a href="famille.html"><i class="fas fa-users-cog"></i> Manage Family</a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <p><i class="fas fa-info-circle"></i> Mode Configuration</p>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <div>
+                    <h1>Family Configuration</h1>
+                    <p class="subtitle">Manage the profiles synced with your EcoShower device</p>
+                </div>
+            </header>
+
+            <section class="stats-grid">
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <i class="fas fa-user-plus"></i>
+                        <h3>Nouveau Membre</h3>
+                    </div>
+                    <form id="add-member-form" class="config-form" onsubmit="event.preventDefault(); addMember();">
+                        <div class="input-group-pro">
+                            <label>First Name</label>
+                            <input type="text" id="member-name" placeholder="Ex: Sebastian" required>
+                        </div>
+                        <button type="submit" class="btn-primary-pro">
+                            <i class="fas fa-check"></i> Save
+                        </button>
+                    </form>
+                </div>
+
+                <div class="card glass-card">
+                    <div class="card-header">
+                        <i class="fas fa-list"></i>
+                        <h3>Current Members</h3>
+                    </div>
+                    <div id="family-list-container" class="member-list-pro">
+                        </div>
+                </div>
+
+                <div class="card glass-card highlight-card">
+                    <div class="card-header">
+                        <i class="fas fa-microchip"></i>
+                        <h3>Device Status</h3>
+                    </div>
+                    <div class="status-box">
+                        <p><span class="status-dot online"></span> Wi-Fi Connected</p>
+                        <p><i class="fas fa-sync"></i> Auto Sync</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // On récupère la même liste que sur la page d'accueil
+        let members = JSON.parse(localStorage.getItem('ecoFamily')) || ["Papa", "Maman", "Alex", "Julie"];
+
+        function saveAndRender() {
+            localStorage.setItem('ecoFamily', JSON.stringify(members));
+            render();
+        }
+
+        function render() {
+            const listContainer = document.getElementById('family-list-container');
+            
+            listContainer.innerHTML = members.map((m, index) => `
+                <div class="member-row-pro">
+                    <div class="member-id">
+                        <span class="avatar-mini-pro">${m.charAt(0)}</span>
+                        <span>${m}</span>
+                    </div>
+                    <button onclick="deleteMember(${index})" class="btn-delete-pro">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addMember() {
+            const input = document.getElementById('member-name');
+            const name = input.value.trim();
+            if(name) {
+                members.push(name);
+                input.value = "";
+                saveAndRender();
+            }
+        }
+
+        function deleteMember(index) {
+            if(confirm(`Are you sure you want to remove ${members[index]} from the system?`)) {
+                members.splice(index, 1);
+                saveAndRender();
+            }
+        }
+
+        // Premier affichage
+        render();
+    </script>
+</body>
+</html>
