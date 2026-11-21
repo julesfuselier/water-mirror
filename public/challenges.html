@@ -1,140 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Challenges | Water Mirror</title>
-    <link rel="icon" href="/img/logo.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Défis · Water Mirror</title>
+    <meta name="description" content="Défis du jour, objectifs de famille et trophées.">
+    <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/img/logo-mark.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Rajdhani:wght@600;700;800&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/base.css">
-    <link rel="stylesheet" href="/assets/css/pages/challenges.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap">
+    <link rel="stylesheet" href="/assets/css/app.css">
     <script type="module" src="/assets/js/pages/challenges.js"></script>
 </head>
 <body data-page="challenges">
+    <header class="topbar" data-nav="top"></header>
 
-    <div class="master-bg"></div>
-
-    <nav class="sidebar" data-nav="sidebar"></nav>
-
-    <main class="main-content">
-
-        <header class="top-header">
+    <main class="page">
+        <header class="page-header page-header-row">
             <div>
-                <div class="date-text" id="status-text">Quest System & Achievements</div>
-                <h1 class="challenges-title">Quest <span>Log</span></h1>
+                <h1 class="title-1">Défis</h1>
+                <p id="status-text">Relève-les sous la douche, récupère tes points ici.</p>
             </div>
-            <div class="top-stats">
-                <div class="badge-pill badge-xp"><i class="fas fa-star"></i> <span class="stat-value" id="xp-display">0</span> XP</div>
-                <div class="badge-pill badge-fire"><i class="fas fa-fire"></i> <span class="stat-value" id="streak-display">0</span> Streak</div>
+            <div style="display: flex; gap: 8px;">
+                <span class="badge badge-brand"><span id="xp" class="num">0</span> XP</span>
+                <span class="badge">Série <span id="streak" class="num">0</span></span>
             </div>
         </header>
 
-        <section class="challenges-grid">
+        <section aria-labelledby="daily-title">
+            <h2 class="title-2 section-title" id="daily-title">Aujourd’hui</h2>
+            <div class="stack" data-group="daily"></div>
+        </section>
 
-            <div class="challenge-zone">
-                <div class="rubric-card daily-zone">
-                    <h3><i class="fas fa-bolt"></i> Daily Quests (Live Data)</h3>
+        <section class="section" aria-labelledby="family-title">
+            <h2 class="title-2 section-title" id="family-title">En famille</h2>
+            <div class="stack" data-group="family"></div>
+        </section>
 
-                    <div class="challenge-box" id="card-q1">
-                        <div class="ch-header">
-                            <div class="ch-details">
-                                <h4>Speed Demon</h4>
-                                <p>Take a shower in under 3 minutes.</p>
-                            </div>
-                            <div class="ch-rewards">
-                                <div class="reward-tag xp">+50 XP</div>
-                            </div>
-                        </div>
-                        <div class="ch-progress-area">
-                            <div class="ch-bar-bg"><div class="ch-bar-fill" id="bar-q1"></div></div>
-                            <div id="action-q1"></div>
-                        </div>
-                    </div>
-
-                    <div class="challenge-box" id="card-q2">
-                        <div class="ch-header">
-                            <div class="ch-details">
-                                <h4>Desert Camel</h4>
-                                <p>Consume less than 15 Liters in your last shower.</p>
-                            </div>
-                            <div class="ch-rewards">
-                                <div class="reward-tag xp">+100 XP</div>
-                            </div>
-                        </div>
-                        <div class="ch-progress-area">
-                            <div class="ch-bar-bg"><div class="ch-bar-fill" id="bar-q2"></div></div>
-                            <div id="action-q2"></div>
-                        </div>
-                    </div>
-
-                    <div class="challenge-box" id="card-q3">
-                        <div class="ch-header">
-                            <div class="ch-details">
-                                <h4>Consistency is Key</h4>
-                                <p>Achieve a 3-day fire streak (under 40L consecutively).</p>
-                            </div>
-                            <div class="ch-rewards">
-                                <div class="reward-tag xp">+150 XP</div>
-                            </div>
-                        </div>
-                        <div class="ch-progress-area">
-                            <div class="ch-bar-bg"><div class="ch-bar-fill" id="bar-q3"></div></div>
-                            <div id="action-q3"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="challenge-zone">
-
-                <div class="rubric-card squad-zone" style="height: auto;">
-                    <h3><i class="fas fa-users"></i> Squad Goals</h3>
-
-                    <div class="challenge-box" id="card-sq1">
-                        <div class="ch-header">
-                            <div class="ch-details">
-                                <h4>Synergy Protocol</h4>
-                                <p>The entire family's average water consumption is below 35 Liters.</p>
-                            </div>
-                            <div class="ch-rewards">
-                                <div class="reward-tag xp">+300 XP</div>
-                            </div>
-                        </div>
-                        <div class="ch-progress-area">
-                            <div class="ch-bar-bg"><div class="ch-bar-fill" id="bar-sq1"></div></div>
-                            <div id="action-sq1"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="rubric-card epic-zone">
-                    <h3><i class="fas fa-trophy"></i> Epic Trophies (Career)</h3>
-
-                    <div class="challenge-box" id="card-ep1">
-                        <div class="ch-header">
-                            <div class="ch-details">
-                                <h4>Ocean Savior</h4>
-                                <p>Save a total of 1,000 Liters of water throughout your journey.</p>
-                            </div>
-                            <div class="ch-rewards">
-                                <div class="reward-tag xp">+1000 XP</div>
-                            </div>
-                        </div>
-                        <div class="ch-progress-area">
-                            <div class="ch-bar-bg"><div class="ch-bar-fill" id="bar-ep1"></div></div>
-                            <div id="action-ep1"></div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
+        <section class="section" aria-labelledby="career-title">
+            <h2 class="title-2 section-title" id="career-title">Trophées</h2>
+            <div class="stack" data-group="career"></div>
         </section>
     </main>
-    <nav class="bottom-nav" data-nav="bottom"></nav>
+
+    <nav class="tabbar" data-nav="tabs"></nav>
 </body>
 </html>

@@ -1,63 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Water Mirror | Select Profile</title>
-    <link rel="icon" href="/img/logo.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Water Mirror</title>
+    <meta name="description" content="Qui se douche ? Choisissez votre profil Water Mirror.">
+    <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/img/logo-mark.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Rajdhani:wght@600;700;800&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/base.css">
-    <link rel="stylesheet" href="/assets/css/pages/index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap">
+    <link rel="stylesheet" href="/assets/css/app.css">
     <script type="module" src="/assets/js/pages/index.js"></script>
 </head>
 <body data-page="index">
-
-    <div class="main-app" id="mainApp">
-        <header class="home-header">
-            <img src="img/logo.png" alt="Water Mirror Logo" class="main-logo">
-            <div class="family-impact">
-                <i class="fas fa-globe-europe" style="color: var(--primary);"></i>
-                <span id="global-money">0.00</span> €
-            </div>
+    <main class="welcome">
+        <header class="welcome-top">
+            <a class="brand" href="/"><img src="/img/logo-mark.png" alt="" width="22" height="26">Water Mirror</a>
+            <span class="badge badge-brand" title="Économies cumulées de toute la famille">
+                <i data-icon="drop"></i><span id="family-savings" class="num">—</span>
+            </span>
         </header>
 
-        <section class="selection-area">
-            <div class="welcome-text">
-                <h2>Who is showering?</h2>
-                <p>Tap your profile to sign in.</p>
+        <section class="welcome-hero">
+            <div class="welcome-main">
+                <h1 class="display">On ne réduit que <em class="accent brand-text">ce qu’on voit…</em></h1>
+                <h2 class="title-2 question">Qui se douche ?</h2>
+                <div class="profiles" id="profiles"></div>
             </div>
-
-            <div id="profile-grid" class="profile-grid">
-                <!-- Profiles injected here by JS -->
-            </div>
-
-            <div class="btn-manage-container">
-                <button class="btn-manage" data-action="toggle-manage">
-                    <i class="fas fa-users-cog"></i> Manage Family
-                </button>
-            </div>
+            <img class="welcome-mascot" src="/img/goutti.webp" alt="Goutti, la mascotte Water Mirror, fait coucou" width="280" height="360">
         </section>
-    </div>
 
-    <!-- Overlay & Bottom Sheet -->
-    <div class="modal-overlay" id="modal-overlay" data-action="toggle-manage"></div>
-    <div id="manage-panel" class="manage-panel">
-        <div class="panel-drag-handle"></div>
-        <div class="panel-header">
-            <h3>Family Settings</h3>
-            <button class="btn-close-icon" data-action="toggle-manage"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="panel-body">
-            <div class="add-member-box">
-                <input type="text" id="new-member-name" placeholder="New name...">
-                <button class="btn-add" id="btn-add-member"><i class="fas fa-plus"></i></button>
-            </div>
-            <div id="member-list-edit" style="max-height: 40vh; overflow-y: auto;">
-                <!-- Members edit list injected here -->
-            </div>
+        <footer class="welcome-footer">
+            <button class="btn btn-plain" id="btn-manage"><i data-icon="people"></i> Gérer la famille</button>
+            <a class="btn btn-plain" href="/about">Découvrir le projet <i data-icon="arrow"></i></a>
+        </footer>
+    </main>
+
+    <div class="sheet" id="family-sheet" role="dialog" aria-modal="true" aria-labelledby="family-title">
+        <div class="sheet-handle"></div>
+        <div class="sheet-body">
+            <h2 class="title-2" id="family-title">La famille</h2>
+            <p class="label" style="margin-top: 4px;">Chaque membre choisit son profil sur le boîtier avant de se doucher.</p>
+            <form class="add-member" id="add-member">
+                <label class="sr-only" for="new-member">Prénom</label>
+                <input class="input" id="new-member" placeholder="Prénom" autocomplete="off" maxlength="40">
+                <button class="btn btn-primary" type="submit">Ajouter</button>
+            </form>
+            <div id="member-list"></div>
+            <button class="btn btn-block" id="btn-done" style="margin-top: 20px;">Terminé</button>
         </div>
     </div>
 </body>

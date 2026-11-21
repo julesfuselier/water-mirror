@@ -15,9 +15,8 @@ Navigateur ◀── pages statiques (public/) ◀── GET /api/showers ◀─
 | Dossier | Contenu |
 | --- | --- |
 | `public/` | Le site (HTML/CSS/JS sans build). `index.html` = choix du profil, `dashboard.html` = accueil perso |
-| `public/assets/css/base.css` | Couleurs, reset, navigation (sidebar desktop / barre mobile) |
-| `public/assets/css/pages/` | Styles propres à chaque page |
-| `public/assets/js/` | Modules partagés : `config.js` (constantes métier), `api.js`, `session.js`, `stats.js` (calculs), `ui.js` (nav, helpers) |
+| `public/assets/css/app.css` | Design system : couleurs (clair/sombre), typo Inter, composants, styles des pages |
+| `public/assets/js/` | Modules partagés : `config.js` (constantes métier), `api.js`, `session.js`, `stats.js` (calculs), `ui.js` (nav, sheets, helpers), `icons.js`, `motion.js` (ressorts), `format.js` (nombres en français) |
 | `public/assets/js/pages/` | La logique de chaque page |
 | `api/` | Fonctions serverless Vercel |
 | `lib/` | Accès base de données, validation, helpers HTTP |

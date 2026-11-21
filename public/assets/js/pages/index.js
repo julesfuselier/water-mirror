@@ -1,71 +1,66 @@
-// Profile selection ("Who is showering?") and family management.
+// "Qui se douche ?" — profile selection and family management.
 
 import { fetchShowers } from '../api.js';
 import { POLL_INTERVAL_MS } from '../config.js';
+import { euros } from '../format.js';
+import { hydrateIcons, icon } from '../icons.js';
 import { getFamily, saveFamily } from '../session.js';
 import { toEuros, totalLitersSaved } from '../stats.js';
-import { $, escapeHtml, poll, setText } from '../ui.js';
+import { $, avatarHtml, createSheet, escapeHtml, poll, setText } from '../ui.js';
 
-const AVATAR_COLORS = ['#00d2ff', '#00ff88', '#f1c40f', '#b128ff', '#ff4b2b'];
 let members = getFamily();
+const sheet = createSheet($('family-sheet'));
 
 function render() {
-  $('profile-grid').innerHTML = members
-    .map((name, i) => {
-      const color = AVATAR_COLORS[i % AVATAR_COLORS.length];
-      return `
-        <a href="/dashboard?user=${encodeURIComponent(name)}" class="profile-item">
-          <div class="avatar-circle" style="border-color: ${color}40; color: ${color}">${escapeHtml(name.charAt(0).toUpperCase())}</div>
-          <span class="profile-name">${escapeHtml(name)}</span>
-        </a>`;
-    })
+  $('profiles').innerHTML = members
+    .map((name) => `<a class="profile" href="/dashboard?user=${encodeURIComponent(name)}">${avatarHtml(name)}<span>${escapeHtml(name)}</span></a>`)
     .join('');
 
-  $('member-list-edit').innerHTML = members
+  $('member-list').innerHTML = members
     .map(
       (name, i) => `
-        <div class="edit-item">
-          <span>${escapeHtml(name)}</span>
-          <button class="btn-del" data-index="${i}" aria-label="Delete ${escapeHtml(name)}"><i class="fas fa-trash"></i></button>
+        <div class="member-row">
+          ${avatarHtml(name)}
+          <span class="grow">${escapeHtml(name)}</span>
+          <button class="btn btn-danger btn-sm" data-index="${i}" aria-label="Retirer ${escapeHtml(name)}">${icon('trash')}</button>
         </div>`,
     )
     .join('');
 }
 
-function addMember() {
-  const input = $('new-member-name');
+$('add-member').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const input = $('new-member');
   const name = input.value.trim();
-  if (!name || members.some((m) => m.toLowerCase() === name.toLowerCase())) return;
+  if (!name) return;
+  if (members.some((m) => m.toLowerCase() === name.toLowerCase())) {
+    input.select();
+    return;
+  }
   members.push(name);
   saveFamily(members);
   input.value = '';
   render();
-}
+});
 
-function deleteMember(index) {
-  if (!confirm(`Permanently delete ${members[index]}?`)) return;
+$('member-list').addEventListener('click', (e) => {
+  const button = e.target.closest('[data-index]');
+  if (!button) return;
+  const index = Number(button.dataset.index);
+  if (!confirm(`Retirer ${members[index]} de la famille ?`)) return;
   members.splice(index, 1);
   saveFamily(members);
   render();
-}
-
-function toggleManage() {
-  $('manage-panel').classList.toggle('active');
-  $('modal-overlay').classList.toggle('active');
-}
-
-async function refreshFamilySavings() {
-  const { showers } = await fetchShowers();
-  setText('global-money', toEuros(totalLitersSaved(showers)).toFixed(2));
-}
-
-document.querySelectorAll('[data-action="toggle-manage"]').forEach((el) => el.addEventListener('click', toggleManage));
-$('btn-add-member').addEventListener('click', addMember);
-$('new-member-name').addEventListener('keydown', (e) => e.key === 'Enter' && addMember());
-$('member-list-edit').addEventListener('click', (e) => {
-  const btn = e.target.closest('.btn-del');
-  if (btn) deleteMember(Number(btn.dataset.index));
 });
 
+$('btn-manage').addEventListener('click', sheet.open);
+$('btn-done').addEventListener('click', () => sheet.close());
+
+async function refreshSavings() {
+  const { showers } = await fetchShowers();
+  setText('family-savings', `${euros(toEuros(totalLitersSaved(showers)))} économisés`);
+}
+
+hydrateIcons();
 render();
-poll(refreshFamilySavings, POLL_INTERVAL_MS);
+poll(refreshSavings, POLL_INTERVAL_MS);

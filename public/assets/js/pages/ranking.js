@@ -1,35 +1,27 @@
-// Family leaderboard: lowest average consumption wins.
+// Classement familial : la moyenne la plus basse gagne.
 
 import { fetchShowers } from '../api.js';
 import { POLL_INTERVAL_MS } from '../config.js';
+import { num } from '../format.js';
 import { getCurrentUser, getFamily } from '../session.js';
 import { averageLiters, currentEcoStreak, showersOf } from '../stats.js';
-import { $, confirmAndResetEverything, escapeHtml, poll, renderNav } from '../ui.js';
+import { $, avatarHtml, confirmAndResetEverything, escapeHtml, poll, renderNav, setText, toast } from '../ui.js';
 
 renderNav();
-const currentUser = getCurrentUser() ?? '';
-const SCALE_MAX_LITERS = 80; // full width of the volume bar
+const me = (getCurrentUser() ?? '').toLowerCase();
+const SCALE_MAX_LITERS = 80;
+const MEDALS = ['var(--gold)', 'var(--silver)', 'var(--bronze)'];
 
 const TITLES = [
-  [20, 'Aqua Legend'],
-  [35, 'Eco-Guardian'],
-  [50, 'Splash Rookie'],
-  [Infinity, 'Water Waster'],
+  [20, "Légende de l’eau"],
+  [35, 'Éco-gardien'],
+  [50, 'Apprenti'],
+  [Infinity, 'Gros débit'],
 ];
-const titleFor = (avg) => (avg === null ? 'Waiting...' : TITLES.find(([max]) => avg <= max)[1]);
-const barClass = (avg) => (avg <= 35 ? 'vol-good' : avg <= 55 ? 'vol-warn' : 'vol-bad');
-const RANK_COLORS = ['var(--warning)', 'var(--silver)', 'var(--bronze)'];
-const rankColor = (rank) => RANK_COLORS[rank - 1] ?? 'var(--text-muted)';
+const titleFor = (avg) => (avg === null ? 'Pas encore de douche' : TITLES.find(([max]) => avg <= max)[1]);
+const barTone = (avg) => (avg <= 35 ? 'var(--success)' : avg <= 55 ? 'var(--warning)' : 'var(--danger)');
 
-function setStatus(online) {
-  const status = $('status-text');
-  status.innerHTML = online
-    ? '<i class="fas fa-link"></i> Live Connected'
-    : '<i class="fas fa-unlink"></i> Offline (cached data)';
-  status.style.color = online ? 'var(--success)' : 'var(--danger)';
-}
-
-function buildLeaderboard(showers) {
+function leaderboard(showers) {
   return getFamily()
     .map((name) => {
       const own = showersOf(showers, name);
@@ -39,41 +31,38 @@ function buildLeaderboard(showers) {
 }
 
 function renderPodium(players) {
-  [1, 2, 3].forEach((pos) => {
-    const p = players[pos - 1];
-    const ranked = p && p.avg !== null;
-    $(`p${pos}-name`).textContent = ranked ? p.name : '???';
-    $(`p${pos}-avatar`).textContent = ranked ? p.name.charAt(0).toUpperCase() : '-';
-    $(`p${pos}-score`).innerHTML = `${ranked ? p.avg.toFixed(0) : '--'}<span>L</span>`;
-  });
+  const order = [1, 0, 2]; // 2nd, 1st, 3rd
+  $('podium').innerHTML = order
+    .map((i) => {
+      const p = players[i];
+      if (!p || p.avg === null) return '<div></div>';
+      return `
+        <div class="card podium-place ${i === 0 ? 'first' : ''}">
+          <span class="medal" style="background:${MEDALS[i]}">${i + 1}</span>
+          ${avatarHtml(p.name)}
+          <span class="name">${escapeHtml(p.name)}</span>
+          <span class="label num">${num(p.avg, 0)} L</span>
+        </div>`;
+    })
+    .join('');
 }
 
 function renderList(players) {
-  $('ranking-rows-container').innerHTML = players
+  $('ranking').innerHTML = players
     .map((p, i) => {
-      const rank = i + 1;
-      const color = rankColor(rank);
-      const isYou = p.name.toLowerCase() === currentUser.toLowerCase();
       const fill = p.avg === null ? 0 : Math.min(100, (p.avg / SCALE_MAX_LITERS) * 100);
+      const isMe = p.name.toLowerCase() === me;
       return `
-        <div class="ranking-item ${isYou ? 'current-user' : ''}">
-          <div class="rank-number" style="color: ${color}">#${rank}</div>
-          <div class="item-details">
-            <div class="item-header">
-              <div class="item-avatar" style="border-color: ${color}; color: ${color}; box-shadow: 0 0 10px ${color}50;">
-                ${escapeHtml(p.name.charAt(0).toUpperCase())}
-              </div>
-              <div class="item-name">${escapeHtml(p.name)}</div>
-              ${isYou ? '<span class="title-tag me">YOU</span>' : ''}
-              <span class="title-tag hidden-mobile">${titleFor(p.avg)}</span>
-            </div>
-            <div class="item-stats">
-              <span class="stat-pill"><i class="fas fa-fire"></i> ${p.streak} days</span>
-            </div>
+        <div class="list-row ${isMe ? 'me' : ''}">
+          <span class="rank">${i + 1}</span>
+          ${avatarHtml(p.name)}
+          <div class="grow">
+            <p class="headline">${escapeHtml(p.name)}${isMe ? ' <span class="badge badge-brand" style="margin-left:6px">Toi</span>' : ''}</p>
+            <p class="label">${titleFor(p.avg)}${p.streak ? ` · série de ${p.streak}` : ''}</p>
           </div>
-          <div class="item-score">
-            <div class="score-bold">${p.avg === null ? '---' : p.avg.toFixed(1)}<span>L / avg</span></div>
-            <div class="vol-bar-bg"><div class="vol-bar-fill ${barClass(p.avg ?? Infinity)}" style="width: ${fill}%"></div></div>
+          <div class="rank-score">
+            <p class="headline num">${p.avg === null ? '—' : `${num(p.avg)} L`}</p>
+            <div class="progress"><span style="width:${fill}%;background:${barTone(p.avg)}"></span></div>
           </div>
         </div>`;
     })
@@ -82,22 +71,19 @@ function renderList(players) {
 
 async function refresh() {
   const { showers, online } = await fetchShowers();
-  setStatus(online);
-  const players = buildLeaderboard(showers);
+  $('status-dot').className = `dot ${online ? 'online' : 'offline'}`;
+  setText('status-text', online ? 'En direct' : 'Hors ligne');
+  const players = leaderboard(showers);
   renderPodium(players);
   renderList(players);
 }
 
-function share() {
-  const data = {
-    title: 'My Water Mirror Score',
-    text: "I'm competing on Water Mirror with my family! My eco-profile is on point. 💧🌍",
-    url: location.origin,
-  };
-  if (navigator.share) navigator.share(data).catch(() => {});
-  else alert("Sharing is not supported on this browser, but you're still a hero! 💧");
-}
-
-$('btn-share').addEventListener('click', share);
+$('btn-share').addEventListener('click', async () => {
+  const data = { title: 'Water Mirror', text: 'On fait la course aux douches économes en famille avec Water Mirror 💧', url: location.origin };
+  if (navigator.share) return navigator.share(data).catch(() => {});
+  await navigator.clipboard?.writeText(`${data.text} ${data.url}`);
+  toast('Lien copié');
+});
 $('btn-reset').addEventListener('click', confirmAndResetEverything);
+
 poll(refresh, POLL_INTERVAL_MS);

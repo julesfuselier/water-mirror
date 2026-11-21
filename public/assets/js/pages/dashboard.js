@@ -1,276 +1,250 @@
-// Personal dashboard: last shower, mascot, eco-tree (daily login streak) and charts.
+// Accueil : dernière douche, Goutti, stats, graphique et écosystème (série de connexion).
 
 import { fetchShowers } from '../api.js';
 import { POLL_INTERVAL_MS } from '../config.js';
+import { euros, num, timeAgo } from '../format.js';
+import { spring } from '../motion.js';
 import { requireUser, userKey } from '../session.js';
 import {
-  averageLiters, bestEcoStreak, flowRate, litersByPeriod, litersSaved, showersOf, toEuros, totalLitersSaved,
+  averageLiters, currentEcoStreak, flowRate, litersByPeriod, showersOf, toEuros, totalLitersSaved,
 } from '../stats.js';
 import { storage } from '../storage.js';
-import { $, poll, renderNav, setText } from '../ui.js';
+import { $, createSheet, poll, renderNav, segmented, setText } from '../ui.js';
 
 const user = requireUser();
 renderNav();
 setText('user-name', user);
+setText('greeting', new Date().getHours() < 18 ? 'Bonjour' : 'Bonsoir');
 
-const FUN_FACTS = [
-  'A standard shower head uses 15 liters per minute. The Water Mirror helps you reduce that!',
-  'Turning off the water while soaping up saves up to 10 liters.',
-  'Challenge: Try to keep your next shower under 3 minutes!',
-  'The energy used to heat water for a 10min shower could power a TV for 14 hours.',
-  'By taking shorter showers, your family could save thousands of liters a year.',
+const TIPS = [
+  'Un pommeau classique débite environ 15 litres par minute. Un pommeau économe, deux fois moins.',
+  "Couper l’eau pendant qu’on se savonne économise jusqu’à 10 litres.",
+  'Une douche de 5 minutes consomme environ trois fois moins d’eau qu’un bain.',
+  "Chauffer l’eau représente la majeure partie du coût d’une douche : chaque minute en moins compte double.",
+  'Défi du jour : une douche de moins de 3 minutes.',
 ];
 
-/** Mascot mood by volume of the last shower: [max liters, image, message] */
+/** Goutti’s reaction to the last shower volume. */
 const MOODS = [
-  [20, null, 'Absolute Hero! ✨'], // image depends on accessories, see heroImage()
-  [40, 'img/smile.png', 'Excellent! Eco profile. 👍'],
-  [55, 'img/normal.png', 'Average. Watch the timer. 👀'],
-  [72, 'img/stress.png', 'Warning! Pressure rising...'],
-  [Infinity, 'img/triste.png', 'Critical Waste! 🔥'],
+  [0, 'Hmm, 0 litre ? Le capteur a dû rater ta douche.'],
+  [20, 'Incroyable ! Tu es une vraie légende de l’eau.'],
+  [40, 'Belle douche, profil éco validé.'],
+  [55, "Dans la moyenne. Garde un œil sur l’écran."],
+  [72, 'Attention, ça commence à déborder…'],
+  [Infinity, "Aïe ! Grosse douche. On fait mieux demain ?"],
 ];
 
-/** Eco-tree levels by login streak: [streak needed, image, label] */
-const TREE_LEVELS = [
-  [0, 'img/arbre_lvl1.png', 'Lvl 1'],
-  [3, 'img/arbre_lvl2.png', 'Lvl 2'],
-  [7, 'img/arbre_lvl3.png', 'Lvl 3'],
-  [15, 'img/arbre_lvl4.png', 'Lvl 4'],
-  [30, 'img/arbre_lvl5.png', 'MAX'],
+/** Eco-tree levels by daily login streak: [drops needed, image] */
+const TREE = [
+  [0, '/img/arbre_lvl1.png'],
+  [3, '/img/arbre_lvl2.png'],
+  [7, '/img/arbre_lvl3.png'],
+  [15, '/img/arbre_lvl4.png'],
+  [30, '/img/arbre_lvl5.png'],
 ];
-
-const CHART_STYLES = {
-  daily: { point: '#00d2ff', line: 'rgba(0, 210, 255, 0.8)' },
-  weekly: { point: '#b128ff', line: 'rgba(177, 40, 255, 0.8)' },
-  monthly: { point: '#00ff88', line: 'rgba(0, 255, 136, 0.8)' },
-};
 
 let userShowers = [];
-let loginStreak = Number(storage.get(userKey('streak', user))) || 0;
-let chartView = 'daily';
+let drops = Number(storage.get(userKey('streak', user))) || 0;
+let view = 'daily';
 let chart = null;
-let spinning = false;
 
-/* ---------- Header ---------- */
+/* ---------- daily drop (login streak) ---------- */
 
-function renderGreeting() {
-  const hour = new Date().getHours();
-  const [text, icon, color] =
-    hour < 12 ? ['Good Morning', 'fa-sun', 'var(--warning)']
-    : hour < 18 ? ['Good Afternoon', 'fa-cloud-sun', 'var(--primary)']
-    : ['Good Evening', 'fa-moon', '#b128ff'];
-  setText('greeting-text', text);
-  $('greeting-icon').className = `fas ${icon}`;
-  $('greeting-icon').style.color = color;
-}
+const dropSheet = createSheet($('drop-sheet'));
+$('drop-ok').addEventListener('click', () => dropSheet.close());
 
-function renderConnection(online) {
-  $('conn-dot').className = `conn-dot ${online ? 'online' : 'offline'}`;
-  setText('conn-text', online ? 'Device Online' : 'Device Offline');
-}
-
-/* ---------- Daily login streak ("drops") ---------- */
-
-const POPUPS = {
-  success: { icon: 'fa-tint', color: 'var(--primary)' },
-  warning: { icon: 'fa-hourglass-half', color: 'var(--warning)' },
-  danger: { icon: 'fa-leaf', color: 'var(--danger)' },
-};
-
-function showPopup(type, title, html) {
-  $('popup-icon').className = `fas ${POPUPS[type].icon} popup-icon`;
-  $('popup-icon').style.color = POPUPS[type].color;
-  setText('popup-title', title);
-  setText('popup-total-drops', loginStreak);
-  $('popup-text').innerHTML = html;
-  $('login-popup-overlay').classList.add('active');
-}
-
-function checkDailyLogin() {
+function checkDailyDrop() {
   const today = new Date().toISOString().slice(0, 10);
-  const lastLogin = storage.get(userKey('last_login', user));
-  if (lastLogin === today) return;
+  const last = storage.get(userKey('last_login', user));
+  if (last === today) return;
 
-  if (!lastLogin) {
-    loginStreak = 1;
-    showPopup('success', 'Welcome!', 'You earned your first Daily Drop <b>(+1 💧)</b>! Log in every day to grow your tree.');
+  let title;
+  let text;
+  if (!last) {
+    drops = 1;
+    title = 'Ta première goutte';
+    text = "Reviens chaque jour pour faire grandir ton écosystème.";
   } else {
-    const daysAway = Math.round((new Date(today) - new Date(lastLogin)) / 86_400_000);
-    if (daysAway === 1) {
-      loginStreak++;
-      showPopup('success', 'Daily Drop!', 'Awesome! You logged in today and earned <b>+1 💧</b>. Keep the streak alive to watch your Ecosystem Tree grow!');
-    } else if (daysAway === 2) {
-      showPopup('warning', 'Careful!', "You missed yesterday! Don't forget to log in to keep your Ecosystem alive.");
+    const away = Math.round((new Date(today) - new Date(last)) / 86_400_000);
+    if (away === 1) {
+      drops += 1;
+      title = '+1 goutte';
+      text = `${drops} jours d’affilée. Ton écosystème grandit !`;
+    } else if (away === 2) {
+      title = 'Tu nous as manqué hier';
+      text = "Ta série tient encore, mais pense à revenir demain.";
     } else {
-      loginStreak = 1;
-      showPopup('danger', 'Streak Lost!', "You were gone for too long. Your tree dried up, but you earned <b>1 💧</b> for coming back today! Let's rebuild it.");
+      drops = 1;
+      title = 'On repart de zéro';
+      text = "Ton arbre a séché pendant ton absence. Une goutte pour recommencer.";
     }
   }
   storage.set(userKey('last_login', user), today);
-  storage.set(userKey('streak', user), String(loginStreak));
+  storage.set(userKey('streak', user), String(drops));
+  setText('drop-title', title);
+  setText('drop-text', text);
+  setTimeout(dropSheet.open, 500);
 }
 
-/* ---------- Widgets ---------- */
+/* ---------- rendering ---------- */
 
-function heroImage() {
-  const items = ['crown', 'glasses', 'necklace'].filter((item) => storage.get(`eq_item_${item}_${user}`) === 'true');
-  return items.length ? `img/super_happy_${items.join('_')}.png` : 'img/goutte_contente.png';
-}
-
-function renderMascot(last, online) {
-  if (spinning) return;
-  const img = $('mascot-image');
-  if (!last) {
-    img.src = 'img/normal.png';
-    setText('mascot-msg', online ? 'Take your first shower! 🚿' : 'Waiting for Sync...');
-    return;
-  }
-  const [, image, message] = MOODS.find(([max]) => last.liters <= max);
-  img.src = last.liters === 0 ? 'img/normal.png' : image ?? heroImage();
-  setText('mascot-msg', message);
-}
-
-function renderTree() {
-  const index = TREE_LEVELS.findLastIndex(([min]) => loginStreak >= min);
-  const [min, image, label] = TREE_LEVELS[index];
-  const next = TREE_LEVELS[index + 1];
-  $('tree-img').src = image;
-  setText('tree-level-txt', label);
-  $('tree-progress').style.width = `${next ? ((loginStreak - min) / (next[0] - min)) * 100 : 100}%`;
-  setText('tree-next-goal', next ? `${next[0] - loginStreak} drop(s) to ${next[2]}` : 'Ecosystem fully grown! 🌳');
+function renderConnection(online, last) {
+  $('conn-dot').className = `dot ${online ? 'online' : 'offline'}`;
+  const status = online ? 'Boîtier connecté' : 'Hors ligne';
+  setText('conn-text', last ? `${status} · dernière douche ${timeAgo(last.createdAt)}` : status);
 }
 
 function renderLastShower(last) {
   if (!last) {
-    ['liters-val', 'avg-liters-val', 'flow-rate-val', 'money-val'].forEach((id) => setText(id, '--'));
-    $('duration-val').innerHTML = '<i class="far fa-clock"></i> -- min';
+    ['last-liters', 'last-duration', 'last-flow'].forEach((id) => setText(id, '—'));
+    setText('last-vs-avg', '');
+    setText('mascot-msg', 'Prends ta première douche, je compte !');
     return;
   }
-  setText('liters-val', last.liters > 0 ? last.liters.toFixed(1) : '0');
-  setText('avg-liters-val', averageLiters(userShowers).toFixed(1));
-  $('duration-val').innerHTML = `<i class="far fa-clock"></i> ${last.durationMin > 0 ? last.durationMin.toFixed(1) : '--'} min`;
-  setText('flow-rate-val', flowRate(last).toFixed(1));
-  setText('money-val', toEuros(litersSaved(last)).toFixed(2));
+  setText('last-liters', num(last.liters));
+  setText('last-duration', last.durationMin > 0 ? num(last.durationMin) : '—');
+  setText('last-flow', num(flowRate(last)));
+
+  const delta = last.liters - averageLiters(userShowers);
+  const vs = $('last-vs-avg');
+  vs.textContent = userShowers.length > 1 ? `${delta <= 0 ? '−' : '+'}${num(Math.abs(delta))} L vs ta moyenne` : '';
+  vs.style.color = delta <= 0 ? 'var(--success)' : 'var(--warning)';
+
+  setText('mascot-msg', MOODS.find(([max]) => last.liters <= max)[1]);
 }
 
-/* ---------- Chart & details modal ---------- */
+function renderStats() {
+  const avg = averageLiters(userShowers);
+  const streak = currentEcoStreak(userShowers);
+  setText('stat-avg', avg === null ? '—' : num(avg));
+  setText('stat-saved', euros(toEuros(totalLitersSaved(userShowers))));
+  setText('stat-streak', streak);
+  setText('stat-streak-unit', streak > 1 ? 'douches' : 'douche');
+  setText('stat-count', userShowers.length);
+}
+
+function renderTree() {
+  const index = TREE.findLastIndex(([min]) => drops >= min);
+  const [min, image] = TREE[index];
+  const next = TREE[index + 1];
+  $('tree-img').src = image;
+  setText('tree-level', next ? `Niveau ${index + 1}` : 'Niveau max');
+  $('tree-progress').style.width = `${next ? ((drops - min) / (next[0] - min)) * 100 : 100}%`;
+  const left = next ? next[0] - drops : 0;
+  setText('tree-goal', next ? `${left} goutte${left > 1 ? 's' : ''} avant le niveau ${index + 2} · une goutte par jour de visite` : 'Ton écosystème est à son apogée.');
+}
+
+/* ---------- chart ---------- */
+
+const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
 function chartData() {
-  if (chartView === 'daily') {
-    const recent = userShowers.slice(-10);
-    return { labels: recent.map((_, i) => `#${i + 1}`), data: recent.map((s) => s.liters) };
+  if (view === 'daily') {
+    const recent = userShowers.slice(-12);
+    const days = recent.map((s) => new Date(s.createdAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }));
+    const sameDay = new Set(days).size === 1; // many showers on one day: show the time instead
+    return {
+      labels: recent.map((s, i) =>
+        sameDay ? new Date(s.createdAt).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : days[i]),
+      data: recent.map((s) => s.liters),
+    };
   }
-  const groups = litersByPeriod(userShowers, chartView === 'weekly' ? 'week' : 'month');
-  return { labels: groups.map((g) => g.label), data: groups.map((g) => Math.round(g.liters)) };
+  const groups = litersByPeriod(userShowers, view === 'weekly' ? 'week' : 'month');
+  return {
+    labels: groups.map((g) => (view === 'weekly' ? g.label.replace('W', 'S') : g.label)),
+    data: groups.map((g) => Math.round(g.liters)),
+  };
 }
 
 function renderChart() {
   if (!userShowers.length || typeof Chart === 'undefined') return;
   const { labels, data } = chartData();
-  const style = CHART_STYLES[chartView];
 
-  // Same view: update in place (no flicker on each poll). New view: rebuild with its colors.
-  if (chart?.$view === chartView) {
+  if (chart) {
     chart.data.labels = labels;
     chart.data.datasets[0].data = data;
-    chart.update('none');
+    chart.update();
     return;
   }
-  chart?.destroy();
-  chart = new Chart($('insightsChart'), {
+
+  const canvas = $('chart');
+  const ctx = canvas.getContext('2d');
+  const fill = ctx.createLinearGradient(0, 0, 0, 220);
+  fill.addColorStop(0, 'rgba(34, 154, 241, 0.22)');
+  fill.addColorStop(1, 'rgba(1, 223, 234, 0)');
+  const grid = css('--separator');
+  const text = css('--text-3');
+
+  chart = new Chart(canvas, {
     type: 'line',
     data: {
       labels,
       datasets: [{
-        label: 'Liters Consumed',
         data,
-        backgroundColor: 'transparent',
-        borderColor: style.line,
-        borderWidth: 3,
-        pointBackgroundColor: style.point,
-        pointBorderColor: '#fff',
-        pointBorderWidth: 1,
-        pointRadius: 5,
-        pointHoverRadius: 7,
-        tension: 0.4,
+        fill: true,
+        backgroundColor: fill,
+        borderColor: css('--blue'),
+        borderWidth: 2.5,
+        pointRadius: 0,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: css('--blue'),
+        tension: 0.35,
       }],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      interaction: { mode: 'index', intersect: false },
+      animation: { duration: 500, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          displayColors: false,
+          callbacks: { label: (item) => `${num(item.parsed.y)} L` },
+        },
+      },
       scales: {
-        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } },
-        x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10 } } },
+        y: { beginAtZero: true, border: { display: false }, grid: { color: grid }, ticks: { color: text, maxTicksLimit: 5 } },
+        x: { border: { display: false }, grid: { display: false }, ticks: { color: text, maxRotation: 0, autoSkipPadding: 12 } },
       },
     },
   });
-  chart.$view = chartView;
 }
 
-function setChartView(view) {
-  chartView = view;
-  document.querySelectorAll('.chart-tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.view === view));
+segmented($('chart-view'), (value) => {
+  view = value;
   renderChart();
-}
+});
 
-function openDetails() {
-  setText('modal-total-showers', userShowers.length);
-  if (userShowers.length) {
-    setText('modal-avg-liters', `${averageLiters(userShowers).toFixed(1)} L`);
-    setText('modal-total-saved', `${toEuros(totalLitersSaved(userShowers)).toFixed(2)} €`);
-    setText('modal-best-streak', bestEcoStreak(userShowers));
-  }
-  $('info-modal-overlay').classList.add('active');
-}
+/* ---------- Goutti ---------- */
 
-const closeDetails = () => $('info-modal-overlay').classList.remove('active');
+$('mascot').addEventListener('click', () => {
+  const img = $('mascot').querySelector('img');
+  spring('mascot', {
+    from: 0,
+    to: 360,
+    velocity: 900,
+    damping: 0.8,
+    response: 0.6,
+    onUpdate: (v) => (img.style.transform = `rotate(${v % 360}deg)`),
+    onComplete: () => (img.style.transform = ''),
+  });
+  refresh();
+});
 
-/* ---------- Data loop ---------- */
+/* ---------- data loop ---------- */
 
 async function refresh() {
   const { showers, online } = await fetchShowers();
   userShowers = showersOf(showers, user);
   const last = userShowers.at(-1) ?? null;
-
-  renderConnection(online && showers.length > 0);
+  renderConnection(online && showers.length > 0, last);
   renderLastShower(last);
-  renderMascot(last, online);
+  renderStats();
   renderTree();
-  setText('streak-val', loginStreak);
-  setText('xp-total-display', Math.floor(totalLitersSaved(userShowers)));
   renderChart();
 }
 
-function spinMascot() {
-  if (spinning) return;
-  spinning = true;
-  const img = $('mascot-image');
-  img.style.transform = 'rotate(360deg) scale(1.1)';
-  const quotes = ['Eco-Warriors Assemble! 🌍', 'Analyzing flow rates... 📡', 'Water saved = Planet saved! 💧'];
-  setText('mascot-msg', quotes[Math.floor(Math.random() * quotes.length)]);
-  setTimeout(() => {
-    img.style.transform = 'rotate(0deg) scale(1)';
-    spinning = false;
-    refresh();
-  }, 700);
-}
-
-/* ---------- Events & init ---------- */
-
-$('mascot-widget').addEventListener('click', spinMascot);
-$('chart-widget').addEventListener('click', openDetails);
-document.querySelectorAll('.chart-tab').forEach((tab) =>
-  tab.addEventListener('click', (e) => {
-    e.stopPropagation(); // don't open the details modal
-    setChartView(tab.dataset.view);
-  }),
-);
-$('info-modal-overlay').addEventListener('click', (e) => e.target === e.currentTarget && closeDetails());
-$('btn-close-details').addEventListener('click', closeDetails);
-$('btn-close-popup').addEventListener('click', () => $('login-popup-overlay').classList.remove('active'));
-
-renderGreeting();
-setText('daily-fact', FUN_FACTS[new Date().getDate() % FUN_FACTS.length]);
-checkDailyLogin();
+setText('tip-text', TIPS[new Date().getDate() % TIPS.length]);
+checkDailyDrop();
 poll(refresh, POLL_INTERVAL_MS);

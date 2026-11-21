@@ -41,8 +41,13 @@ createServer(async (req, res) => {
     const file = normalize(join(ROOT, `${pathname}.js`));
     const exists = file.startsWith(join(ROOT, 'api')) && (await stat(file).catch(() => null));
     if (exists) {
-      const mod = await import(pathToFileURL(file).href);
-      return mod.default(req, res);
+      try {
+        const mod = await import(pathToFileURL(file).href);
+        return await mod.default(req, res);
+      } catch (err) {
+        console.error(err);
+        return res.writeHead(500, { 'Content-Type': 'text/plain' }).end(String(err.message));
+      }
     }
   }
   if (await serveStatic(pathname, res)) return;

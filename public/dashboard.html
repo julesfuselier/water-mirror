@@ -1,176 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Home | Water Mirror</title>
-    <link rel="icon" href="/img/logo.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Accueil · Water Mirror</title>
+    <meta name="description" content="Votre dernière douche, vos économies et votre progression.">
+    <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/img/logo-mark.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Rajdhani:wght@600;700;800&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/base.css">
-    <link rel="stylesheet" href="/assets/css/pages/dashboard.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap">
+    <link rel="stylesheet" href="/assets/css/app.css">
     <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script type="module" src="/assets/js/pages/dashboard.js"></script>
 </head>
 <body data-page="dashboard">
+    <header class="topbar" data-nav="top"></header>
 
-    <div class="bg-ripple"></div>
-    <nav class="sidebar" data-nav="sidebar"></nav>
-    <main class="main-content">
-        <header class="top-header">
-            <h1 class="welcome-title">
-                <i id="greeting-icon" class="fas fa-sun" style="color: var(--warning); margin-right: 5px;"></i><span class="greeting-container"><span id="greeting-text">Good Morning</span>, <span id="user-name">Alex</span></span>
-            </h1>
-
-            <div class="header-stats-row">
-                <div class="conn-status-wrapper">
-                    <span class="conn-dot offline" id="conn-dot"></span>
-                    <span id="conn-text">Device Offline</span>
-                </div>
-
-                <div class="top-stats">
-                    <div class="badge-pill badge-xp"><i class="fas fa-star"></i> <span id="xp-total-display" class="stat-value">0</span></div>
-                    <div class="badge-pill badge-drops"><i class="fas fa-tint"></i> <span id="streak-val" class="stat-value">0</span></div>
-                </div>
-            </div>
+    <main class="page">
+        <header class="page-header">
+            <h1 class="title-1"><span id="greeting">Bonjour</span>, <span id="user-name"></span></h1>
+            <p class="label" style="display: flex; align-items: center; gap: 8px;">
+                <span class="dot" id="conn-dot"></span><span id="conn-text">Connexion…</span>
+            </p>
         </header>
 
-        <section class="dashboard-grid">
-
-            <!-- ROW 1: Mascot & Gamification (MOVED TO TOP) -->
-            <div class="row-compact">
-                <!-- CENTER: MASCOT HUB -->
-                <div class="widget widget-mascot" id="mascot-widget">
-                    <div class="mascot-bubble" id="mascot-msg">...</div>
-                    <div class="mascot-img-wrapper">
-                        <img id="mascot-image" src="img/normal.png" alt="Goutti">
+        <div class="stack">
+            <section class="card hero-card" aria-labelledby="last-title">
+                <div>
+                    <h2 class="label" id="last-title">Dernière douche</h2>
+                    <p class="hero-value" style="margin-top: 10px;"><span id="last-liters">—</span><small>L</small></p>
+                    <div class="meta-row">
+                        <span><strong id="last-duration">—</strong> min</span>
+                        <span><strong id="last-flow">—</strong> L/min</span>
+                        <span id="last-vs-avg"></span>
                     </div>
-                    <h3 style="margin-top: 10px; justify-content: center; width: 100%;">Goutti</h3>
                 </div>
+                <button class="mascot-zone" id="mascot" aria-label="Goutti">
+                    <span class="bubble" id="mascot-msg">…</span>
+                    <img class="mascot" src="/img/goutti.webp" alt="" width="125" height="160">
+                </button>
+            </section>
 
-                <!-- RIGHT: ECOSYSTEM TREE -->
-                <div class="widget widget-tree">
-                    <div class="tree-container">
-                        <img id="tree-img" src="img/arbre_lvl1.png" alt="Tree XP">
+            <section class="grid grid-2x2 grid-4" aria-label="Statistiques">
+                <div class="card"><p class="label">Moyenne</p><p class="stat-value"><span id="stat-avg">—</span><small>L</small></p></div>
+                <div class="card"><p class="label">Économisé</p><p class="stat-value"><span id="stat-saved">—</span></p></div>
+                <div class="card"><p class="label">Série éco</p><p class="stat-value"><span id="stat-streak">—</span><small id="stat-streak-unit">douches</small></p></div>
+                <div class="card"><p class="label">Douches</p><p class="stat-value"><span id="stat-count">—</span></p></div>
+            </section>
+
+            <section class="card" aria-labelledby="chart-title">
+                <div class="card-header">
+                    <h2 class="headline" id="chart-title">Consommation</h2>
+                    <div class="segmented" id="chart-view" role="group" aria-label="Période">
+                        <button data-value="daily" aria-pressed="true">Douches</button>
+                        <button data-value="weekly" aria-pressed="false">Semaines</button>
+                        <button data-value="monthly" aria-pressed="false">Mois</button>
                     </div>
-                    <div class="tree-info-box">
-                        <h4>Ecosystem <span id="tree-level-txt">Lvl 1</span></h4>
-                        <div class="progress-bg">
-                            <div class="progress-fill" id="tree-progress" style="width: 0%;"></div>
+                </div>
+                <div class="chart-wrap"><canvas id="chart" aria-label="Litres consommés"></canvas></div>
+            </section>
+
+            <div class="grid grid-2">
+                <section class="card tree-card" aria-labelledby="tree-title">
+                    <img id="tree-img" src="/img/arbre_lvl1.png" alt="" width="96" height="96">
+                    <div class="grow">
+                        <div class="card-header" style="margin-bottom: 8px;">
+                            <h2 class="headline" id="tree-title">Écosystème</h2>
+                            <span class="badge badge-brand" id="tree-level">Niveau 1</span>
                         </div>
-                        <div id="tree-next-goal" style="font-size: 0.65rem; color: var(--success); font-weight: 700; margin-top: 6px; text-align: left;">3 drops to Lvl 2</div>
+                        <div class="progress"><span id="tree-progress"></span></div>
+                        <p class="label" id="tree-goal" style="margin-top: 8px;"></p>
                     </div>
-                </div>
-            </div>
+                </section>
 
-            <!-- ROW 2: Shower & Flow Rate -->
-            <div class="row-compact">
-                <!-- LEFT: SHOWER -->
-                <div class="widget widget-shower">
+                <section class="card tip" aria-labelledby="tip-title">
+                    <span class="tip-icon"><i data-icon="bulb"></i></span>
                     <div>
-                        <h3><i class="fas fa-tint" style="color: var(--primary);"></i> Last Shower</h3>
-                        <div class="widget-subtext">Live Data</div>
+                        <h2 class="headline" id="tip-title">Le saviez-vous ?</h2>
+                        <p class="secondary" id="tip-text" style="margin-top: 4px;"></p>
                     </div>
-                    <div class="huge-data liters-color"><span id="liters-val">0</span><span>L</span></div>
-                    <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; margin-top: 2px;">Avg: <span id="avg-liters-val">--</span> L</div>
-                    <p id="duration-val" style="color: var(--primary); font-weight: 700; font-size: 0.75rem; margin-top: 5px;">
-                        <i class="far fa-clock"></i> -- min
-                    </p>
-                </div>
-
-                <!-- RIGHT: FLOW RATE / SAVINGS -->
-                <div class="widget widget-flow">
-                    <div>
-                        <h3><i class="fas fa-tachometer-alt" style="color: #b128ff;"></i> Flow Rate</h3>
-                        <div class="widget-subtext">Efficiency</div>
-                    </div>
-                    <div class="huge-data flow-rate-val"><span id="flow-rate-val">0.0</span><span>L/min</span></div>
-
-                    <div style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
-                        <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Savings vs Avg</div>
-                        <div style="font-family: 'Rajdhani', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--success);">+<span id="money-val">0.00</span> €</div>
-                    </div>
-                </div>
+                </section>
             </div>
-
-            <!-- ROW 3: DATA INSIGHTS (CHART) -->
-            <div class="widget widget-chart" id="chart-widget">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <div>
-                        <h3><i class="fas fa-chart-line" style="color: var(--primary);"></i> Data Insights</h3>
-                        <div class="widget-subtext">Click for detailed analysis</div>
-                    </div>
-                    <i class="fas fa-expand-alt" style="color: var(--text-muted); opacity: 0.5;"></i>
-                </div>
-
-                <div class="chart-controls">
-                    <div class="chart-tab active" data-view="daily">Last Showers</div>
-                    <div class="chart-tab" data-view="weekly">Weekly</div>
-                    <div class="chart-tab" data-view="monthly">Monthly</div>
-                </div>
-
-                <div class="chart-container">
-                    <canvas id="insightsChart"></canvas>
-                </div>
-            </div>
-
-            <!-- ROW 4: DAILY DROP WIDGET -->
-            <div class="widget widget-daily-drop">
-                <i class="fas fa-lightbulb daily-icon"></i>
-                <div class="daily-content">
-                    <h4>Daily Drop</h4>
-                    <p id="daily-fact">Did you know? Taking a 5-minute shower saves up to 30L of water compared to a bath.</p>
-                </div>
-            </div>
-
-        </section>
+        </div>
     </main>
 
-    <!-- DETAILED INFO MODAL -->
-    <div class="modal-overlay" id="info-modal-overlay">
-        <div class="info-modal">
-            <div class="modal-header">
-                <h2><i class="fas fa-chart-pie"></i> Detailed Analytics</h2>
-                <button class="btn-close" id="btn-close-details"><i class="fas fa-times"></i></button>
-            </div>
+    <nav class="tabbar" data-nav="tabs"></nav>
 
-            <div class="modal-stats-grid">
-                <div class="modal-stat-box">
-                    <h4>Total Showers Logged</h4>
-                    <div class="val" style="color: var(--primary);" id="modal-total-showers">0</div>
-                </div>
-                <div class="modal-stat-box">
-                    <h4>Avg. Consumption</h4>
-                    <div class="val" style="color: var(--success);" id="modal-avg-liters">0 L</div>
-                </div>
-                <div class="modal-stat-box">
-                    <h4>Total Money Saved</h4>
-                    <div class="val" style="color: var(--warning);" id="modal-total-saved">0.00 €</div>
-                </div>
-                <div class="modal-stat-box">
-                    <h4>Best Streak</h4>
-                    <div class="val" style="color: var(--danger);" id="modal-best-streak">0</div>
-                </div>
-            </div>
-
-            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-top: 10px;">
-                Keep maintaining short showers under 40 Liters to boost your Eco-Tree level and earn more WaterCoins!
-            </p>
-        </div>
+    <div class="sheet" id="drop-sheet" role="dialog" aria-modal="true" aria-labelledby="drop-title" style="text-align: center;">
+        <div class="sheet-handle"></div>
+        <img src="/img/goutti.webp" alt="" width="110" height="140" style="height: 140px; width: auto; margin: 0 auto 12px;">
+        <h2 class="title-2" id="drop-title"></h2>
+        <p class="secondary" id="drop-text" style="margin: 8px auto 20px; max-width: 22rem;"></p>
+        <button class="btn btn-primary btn-block" id="drop-ok">Continuer</button>
     </div>
-    <!-- LOGIN STREAK POPUP -->
-    <div class="modal-overlay" id="login-popup-overlay">
-        <div class="popup-modal">
-            <i class="fas fa-tint popup-icon" id="popup-icon"></i>
-            <h2 class="popup-title" id="popup-title">Daily Drop!</h2>
-            <div id="popup-total-drops" style="font-size: 3.5rem; font-weight: 800; color: var(--primary); margin-bottom: 5px; font-family: 'Rajdhani', sans-serif;">0</div>
-            <div style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 15px;">Total Drops</div>
-            <p class="popup-text" id="popup-text">You logged in today! Keep the streak alive to grow your Ecosystem Tree.</p>
-            <button class="btn-awesome" id="btn-close-popup">Awesome!</button>
-        </div>
-    </div>
-    <nav class="bottom-nav" data-nav="bottom"></nav>
 </body>
 </html>

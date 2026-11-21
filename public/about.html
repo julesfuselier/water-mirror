@@ -1,129 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>The Ecosystem | Water Mirror</title>
-    <link rel="icon" href="/img/logo.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Le projet · Water Mirror</title>
+    <meta name="description" content="On ne réduit que ce qu’on voit : le boîtier connecté qui mesure chaque douche.">
+    <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    <link rel="icon" href="/img/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/img/logo-mark.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Rajdhani:wght@600;700;800&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/base.css">
-    <link rel="stylesheet" href="/assets/css/pages/about.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap">
+    <link rel="stylesheet" href="/assets/css/app.css">
     <script type="module" src="/assets/js/pages/about.js"></script>
 </head>
 <body data-page="about">
+    <header class="topbar" data-nav="top"></header>
 
-    <nav class="sidebar" data-nav="sidebar"></nav>
+    <main class="page">
+        <section class="about-hero">
+            <h1 class="display">On ne réduit que <em class="accent brand-text">ce qu’on voit.</em></h1>
+            <p>Water Mirror se fixe sur votre douche, mesure chaque litre en temps réel et transforme les économies d’eau en jeu de famille.</p>
+            <img class="reveal" src="/img/device_hero.webp" alt="Vue éclatée du boîtier Water Mirror et de son débitmètre" width="560" height="560">
+        </section>
 
-    <main class="main-content" id="scroll-engine">
+        <section class="feature reveal">
+            <div class="device-visual"><img src="/img/boitier1.webp" alt="Le boîtier vu de face, de côté et de dos" width="560" height="220"></div>
+            <div class="feature-copy">
+                <p class="eyebrow brand-text">Le boîtier</p>
+                <h2 class="title-1">Quatre boutons. Même les mains mouillées.</h2>
+                <ul class="feature-list">
+                    <li><strong>Interrupteur.</strong> Coupe toute l’alimentation quand vous êtes absent.</li>
+                    <li><strong>Sélection.</strong> Choisissez votre profil avant que l’eau coule.</li>
+                    <li><strong>Haut et bas.</strong> Parcourez vos stats et l’historique de vos douches.</li>
+                </ul>
+            </div>
+        </section>
 
-        <div class="dynamic-bg">
-            <div class="bg-particles" id="bg-parallax"></div>
-        </div>
+        <section class="feature reverse reveal">
+            <div class="card" style="display: grid; gap: 18px;">
+                <div class="list-row" style="padding-top: 0;"><span class="equivalent-icon"><i data-icon="drop"></i></span><div class="grow"><p class="headline">Débitmètre</p><p class="secondary">Compte chaque litre qui passe dans le flexible.</p></div></div>
+                <div class="list-row"><span class="equivalent-icon"><i data-icon="device"></i></span><div class="grow"><p class="headline">ESP32 double cœur</p><p class="secondary">Filtre le signal et calcule le volume exact.</p></div></div>
+                <div class="list-row"><span class="equivalent-icon"><i data-icon="globe"></i></span><div class="grow"><p class="headline">Wi-Fi</p><p class="secondary">Envoie chaque douche à l’API sécurisée Water Mirror.</p></div></div>
+            </div>
+            <div class="feature-copy">
+                <p class="eyebrow brand-text">À l’intérieur</p>
+                <h2 class="title-1">Un ESP32 qui compte chaque goutte.</h2>
+                <p>Un firmware C++ sur mesure lit le débitmètre, élimine le bruit et transmet la mesure dès la fin de la douche. L’historique de la famille est disponible sur tous les téléphones.</p>
+            </div>
+        </section>
 
-        <div class="story-container">
-
-            <section class="hero">
-                <h1 class="hero-title reveal-up active" id="p-title">Hardware<br><span>Perfected.</span></h1>
-                <p class="hero-subtitle reveal-up active" id="p-sub" style="transition-delay: 0.1s;">Engineered to fit any shower. Designed to change habits. The ESP32-powered Water Mirror module tracks every drop in real-time.</p>
-                <div class="hero-device reveal-scale active" id="p-device" style="transition-delay: 0.2s;"></div>
-            </section>
-
-            <section class="sticky-section">
-
-                <div class="sticky-visual reveal-scale">
-                    <div class="device-wireframe">
-                        <div class="wireframe-img"></div>
-                    </div>
+        <section class="feature reveal">
+            <div class="flip-stage" id="flip" role="button" tabindex="0" aria-label="Simuler l’appui long sur Sélection">
+                <div class="flip-device" id="flip-device">
+                    <div class="flip-screen" id="flip-screen"><strong class="num">14,5</strong><span>litres</span></div>
+                    <span class="flip-button"></span>
                 </div>
+            </div>
+            <div class="feature-copy">
+                <p class="eyebrow brand-text">Installation</p>
+                <h2 class="title-1">En haut ou en bas, à vous de voir.</h2>
+                <p>Sur le pommeau mural ou sur le flexible : chaque salle de bain est différente. Installé à l’envers ? Maintenez <strong>Sélection</strong> cinq secondes et l’écran se retourne.</p>
+                <p class="caption" style="margin-top: 12px;">Touchez le boîtier pour essayer.</p>
+            </div>
+        </section>
 
-                <div class="scrolling-content">
+        <section class="section reveal" style="margin-top: 112px;">
+            <p class="eyebrow brand-text" style="text-align: center;">L’appli</p>
+            <h2 class="title-1" style="text-align: center; max-width: 18ch; margin: 0 auto 32px;">Des chiffres froids, une habitude qui change.</h2>
+            <div class="grid grid-3">
+                <div class="card"><span class="equivalent-icon"><i data-icon="trophy"></i></span><h3 class="headline" style="margin-top: 14px;">Classement familial</h3><p class="secondary" style="margin-top: 4px;">La moyenne la plus basse gagne. Chaque douche compte.</p></div>
+                <div class="card"><span class="equivalent-icon"><i data-icon="target"></i></span><h3 class="headline" style="margin-top: 14px;">Défis</h3><p class="secondary" style="margin-top: 4px;">Défis du jour, objectifs de famille et trophées à débloquer.</p></div>
+                <div class="card"><span class="equivalent-icon"><i data-icon="globe"></i></span><h3 class="headline" style="margin-top: 14px;">Impact réel</h3><p class="secondary" style="margin-top: 4px;">Les litres économisés alimentent une cagnotte pour l’accès à l’eau.</p></div>
+            </div>
+        </section>
 
-                    <div class="scroll-block" data-index="0">
-                        <span class="block-tag">Control Center</span>
-                        <h2>4 Intuitive Buttons.</h2>
-                        <p>No complex manuals needed. We designed the interface to be effortlessly usable, even with wet hands. Navigate through your real-time data seamlessly.</p>
-                        <div class="hardware-grid">
-                            <div class="hw-item"><h4><i class="fas fa-power-off" style="color: var(--danger);"></i> On/Off Switch</h4><p>A physical switch at the base cuts all power to ensure 0% battery drain when you are away.</p></div>
-                            <div class="hw-item"><h4><i class="fas fa-check-circle" style="color: var(--success);"></i> Select Button</h4><p>Confirm your user profile instantly before the water starts flowing.</p></div>
-                            <div class="hw-item"><h4><i class="fas fa-arrow-up" style="color: var(--primary);"></i> Up Navigation</h4><p>Scroll up through the menu and historical shower data.</p></div>
-                            <div class="hw-item"><h4><i class="fas fa-arrow-down" style="color: var(--primary);"></i> Down Navigation</h4><p>Scroll down effortlessly to review your real-time ecosystem stats.</p></div>
-                        </div>
-                    </div>
+        <section class="meet-goutti reveal" style="margin-top: 112px;">
+            <img src="/img/goutti.webp" alt="Goutti fait coucou" width="218" height="280">
+            <div class="feature-copy">
+                <p class="eyebrow brand-text">Goutti</p>
+                <h2 class="title-1">Votre coach, en une goutte.</h2>
+                <p>Goutti réagit à chacune de vos douches : il vous félicite quand vous économisez et vous alerte quand ça déborde.</p>
+            </div>
+        </section>
 
-                    <div class="scroll-block" data-index="1">
-                        <span class="block-tag">The Brain</span>
-                        <h2>ESP32 Processing.</h2>
-                        <p>At its core, a highly efficient ESP32 microcontroller processes the mechanical flow data. Using a custom-built C++ firmware, it filters signal noise, calculates the precise volume, and packages the data.</p>
-                        <div class="hardware-grid">
-                            <div class="hw-item"><h4><i class="fas fa-microchip" style="color: var(--primary);"></i> Dual Core Processing</h4><p>Handles flow counting interrupts and Wi-Fi transmission simultaneously.</p></div>
-                            <div class="hw-item"><h4><i class="fab fa-python" style="color: var(--warning);"></i> API Ready</h4><p>Pushes each measurement instantly to the Water Mirror API over Wi-Fi.</p></div>
-                        </div>
-                    </div>
-
-                </div>
-            </section>
-
-            <section class="flip-section reveal-up">
-                <span class="block-tag" style="margin-bottom: 20px; border-color: var(--warning); color: var(--warning); background: rgba(241,196,15,0.1);">Adaptability</span>
-                <h2 class="flip-title">Top or Bottom? You Choose.</h2>
-                <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 700px; margin: 0 auto; line-height: 1.6;">Every bathroom configuration is unique. Whether you attach the device to the high wall-mounted shower head or the lower handheld hose, the software adapts.</p>
-                <p style="color: #fff; font-size: 1rem; max-width: 700px; margin: 20px auto 0; font-weight: 600;">Installed upside down? Simply press and hold the <span style="color: var(--warning);">SELECT</span> button for 5 seconds.</p>
-
-                <div class="interactive-stage" id="flip-stage">
-                    <div class="smart-device" id="interactive-device">
-                        <div class="screen-ui" id="screen-val">14.5<span style="font-size: 2.5rem;">L</span></div>
-                        <div class="device-btn"></div>
-                    </div>
-                </div>
-
-                <p class="flip-hint"><i class="fas fa-hand-pointer"></i> Click the device to simulate the 5-sec Select hold.</p>
-            </section>
-
-            <section class="software-section">
-                <div class="soft-header reveal-up">
-                    <span class="block-tag" style="border-color: var(--success); color: var(--success); background: rgba(0,255,136,0.1);">SaaS & Web App</span>
-                    <h2>The Digital Ecosystem.</h2>
-                    <p>Hardware is just the beginning. The Web App turns cold data into a highly engaging, gamified experience designed to build lasting ecological habits.</p>
-                </div>
-
-                <div class="cards-stagger">
-
-                    <div class="saas-card reveal-scale">
-                        <i class="fas fa-database saas-icon" style="color: var(--primary);"></i>
-                        <h3>Cloud Sync</h3>
-                        <p>The ESP32 sends every shower to a secure API protected by a device key. Your family's history is stored in a database and available on every phone and computer.</p>
-                    </div>
-
-                    <div class="saas-card reveal-scale" style="transition-delay: 0.1s;">
-                        <i class="fas fa-coins saas-icon"></i>
-                        <h3>Eco-Coins Economy</h3>
-                        <p>Every liter saved below the 60L threshold generates Eco-Coins. Use this digital currency in Goutti's Shop to purchase exclusive backgrounds, crowns, and accessories for your avatar.</p>
-                    </div>
-
-                    <div class="saas-card reveal-scale" style="transition-delay: 0.2s;">
-                        <i class="fas fa-trophy saas-icon"></i>
-                        <h3>Quest Engine</h3>
-                        <p>The system generates Daily Quests, Squad Goals for the whole family, and Epic Career Trophies. Complete them to earn massive XP boosts and maintain your Fire Streak.</p>
-                    </div>
-
-                </div>
-
-                <div class="evolution-wrapper reveal-up">
-                    <h3 class="evolution-title">The Evolution of <span>Goutti</span></h3>
-                    <p style="color: var(--text-muted); font-size: 1.1rem;">Your actions have consequences. Save water, and watch your virtual seed grow through 5 stages into a majestic Forest Master. Waste water, and Goutti becomes stressed, locking access to premium features.</p>
-                    <div class="evolution-img-container">
-                        <div class="evolution-img"></div>
-                    </div>
-                </div>
-
-            </section>
-
-        </div>
+        <section class="card card-brand cta-card reveal">
+            <h2 class="title-1">Prêt à voir votre eau ?</h2>
+            <p class="secondary">Choisissez votre profil et découvrez votre dernière douche.</p>
+            <a class="btn" href="/">Choisir mon profil</a>
+        </section>
     </main>
 
-    <nav class="bottom-nav" data-nav="bottom"></nav>
+    <nav class="tabbar" data-nav="tabs"></nav>
 </body>
 </html>
