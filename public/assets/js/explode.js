@@ -50,7 +50,7 @@ export function initExplodedView(section) {
       const isPipe = p.name === 'debitmetre';
       Object.assign(label.style, {
         left: `${(isPipe ? p.x + p.w + 0.07 : p.x + p.w / 2) * 100}%`,
-        top: `${((isPipe ? p.y + 0.1 : LABEL_ROW) / CROP) * 100}%`, // one shared baseline under the device
+        top: `${((isPipe ? p.y + 0.165 : LABEL_ROW) / CROP) * 100}%`, // one shared baseline under the device
       });
       stage.append(label);
     }
