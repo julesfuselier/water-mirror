@@ -55,7 +55,7 @@ Chaque `git push` sur `main` redéploie le site. Variables d'environnement du pr
 - `DEVICE_API_KEY` : clé que l'ESP32 envoie avec chaque mesure
 - `ADMIN_API_KEY` : clé demandée par le bouton « Reset Family »
 
-La table `showers` se crée toute seule au premier appel. Pour importer l'historique de démo : `npm run seed`.
+La table `showers` se crée toute seule au premier appel. Pour importer l'historique de démo dans la base en ligne : `npm run seed -- --remote https://water-mirror.vercel.app`.
 
 ## Firmware ESP32
 
