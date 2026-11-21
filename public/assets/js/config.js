@@ -45,5 +45,5 @@ export const CALC_SAVING_MINUTES = 2;
 /** Volume d'une baignoire (L), pour les équivalences parlantes. */
 export const BATHTUB_LITERS = 150;
 
-/** Adresse affichée dans la mention RGPD du formulaire (à remplacer par l'adresse de l'équipe). */
-export const CONTACT_EMAIL = 'contact@water-mirror.fr';
+/** Adresse affichée dans la mention RGPD du formulaire (contact RGPD). */
+export const CONTACT_EMAIL = 'jules.fuselier0401@gmail.com';
