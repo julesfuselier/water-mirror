@@ -2,11 +2,25 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <script>
+        /* Apply saved display preferences before first paint (see assets/js/prefs.js) */
+        (function () {
+            var d = document.documentElement, p = {};
+            try { p = JSON.parse(localStorage.getItem('wm_prefs')) || {}; } catch (e) {}
+            d.dataset.theme = p.theme || 'light';
+            d.dataset.text = p.text || 'm';
+            if (p.cvd) d.dataset.cvd = 'on';
+            if (p.dys) d.dataset.dys = 'on';
+            if (p.motion) d.dataset.motion = 'reduce';
+            if (p.contrast) d.dataset.contrast = 'more';
+            if (p.dys) document.write('<link rel="stylesheet" id="font-lexend" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400..700&display=swap">');
+            var dark = d.dataset.theme === 'dark' || (d.dataset.theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+            document.write('<meta name="theme-color" content="' + (dark ? '#000000' : '#f4f7fb') + '">');
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Accueil · Water Mirror</title>
     <meta name="description" content="Votre dernière douche, vos économies et votre progression.">
-    <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="/img/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="/img/logo-mark.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">

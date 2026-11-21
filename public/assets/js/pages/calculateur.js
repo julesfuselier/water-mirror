@@ -3,10 +3,12 @@
 import { submitLead } from '../api.js';
 import { CONTACT_EMAIL } from '../config.js';
 import { estimateShowerCost } from '../stats.js';
+import { bindA11yButtons } from '../a11y.js';
 import { hydrateIcons } from '../icons.js';
 import { $, setText, toast } from '../ui.js';
 
 hydrateIcons();
+bindA11yButtons();
 
 const form = $('calc-form');
 const eur = (v, digits = 0) => v.toLocaleString('fr-FR', { minimumFractionDigits: digits, maximumFractionDigits: digits });

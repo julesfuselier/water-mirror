@@ -2,11 +2,25 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <script>
+        /* Apply saved display preferences before first paint (see assets/js/prefs.js) */
+        (function () {
+            var d = document.documentElement, p = {};
+            try { p = JSON.parse(localStorage.getItem('wm_prefs')) || {}; } catch (e) {}
+            d.dataset.theme = p.theme || 'light';
+            d.dataset.text = p.text || 'm';
+            if (p.cvd) d.dataset.cvd = 'on';
+            if (p.dys) d.dataset.dys = 'on';
+            if (p.motion) d.dataset.motion = 'reduce';
+            if (p.contrast) d.dataset.contrast = 'more';
+            if (p.dys) document.write('<link rel="stylesheet" id="font-lexend" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400..700&display=swap">');
+            var dark = d.dataset.theme === 'dark' || (d.dataset.theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+            document.write('<meta name="theme-color" content="' + (dark ? '#000000' : '#f4f7fb') + '">');
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Combien coûte vraiment ta douche ? · Water Mirror</title>
     <meta name="description" content="Calcule en 20 secondes ce que tes douches te coûtent chaque année en eau et en énergie. Gratuit, sans inscription.">
-    <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="/img/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="/img/logo-mark.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,9 +33,11 @@
     <script type="module" src="/assets/js/pages/calculateur.js"></script>
 </head>
 <body data-page="calculateur">
+    <a class="skip-link" href="#calc-form">Aller au calculateur</a>
     <header class="topbar">
         <a class="brand" href="/calculateur"><img src="/img/logo-mark.png" alt="" width="22" height="26">Water Mirror</a>
         <a class="btn btn-plain btn-sm" href="/about" style="margin-left: auto;">Le boîtier <i data-icon="arrow"></i></a>
+        <button class="a11y-button" type="button" data-open-a11y aria-label="Affichage et accessibilité" title="Affichage et accessibilité" style="margin-left: 0;"><i data-icon="access"></i></button>
     </header>
 
     <main class="page calc-page">

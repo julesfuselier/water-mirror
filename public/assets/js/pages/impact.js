@@ -3,6 +3,7 @@
 import { fetchShowers } from '../api.js';
 import { POLL_INTERVAL_MS } from '../config.js';
 import { euros, int, num } from '../format.js';
+import { reducedMotion } from '../prefs.js';
 import { toEuros, totalLitersSaved } from '../stats.js';
 import { $, poll, renderNav, setText } from '../ui.js';
 
@@ -24,12 +25,10 @@ const FORMATS = {
   'eq-forest': int,
 };
 
-const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
 /** Count-up from 0 on first display (ease-out). */
 function countUp(id, end, duration = 1400) {
   const el = $(id);
-  if (reduced) return (el.textContent = FORMATS[id](end));
+  if (reducedMotion()) return (el.textContent = FORMATS[id](end));
   const start = performance.now();
   const step = (now) => {
     const t = Math.min((now - start) / duration, 1);

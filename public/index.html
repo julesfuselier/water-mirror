@@ -2,11 +2,25 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <script>
+        /* Apply saved display preferences before first paint (see assets/js/prefs.js) */
+        (function () {
+            var d = document.documentElement, p = {};
+            try { p = JSON.parse(localStorage.getItem('wm_prefs')) || {}; } catch (e) {}
+            d.dataset.theme = p.theme || 'light';
+            d.dataset.text = p.text || 'm';
+            if (p.cvd) d.dataset.cvd = 'on';
+            if (p.dys) d.dataset.dys = 'on';
+            if (p.motion) d.dataset.motion = 'reduce';
+            if (p.contrast) d.dataset.contrast = 'more';
+            if (p.dys) document.write('<link rel="stylesheet" id="font-lexend" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400..700&display=swap">');
+            var dark = d.dataset.theme === 'dark' || (d.dataset.theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+            document.write('<meta name="theme-color" content="' + (dark ? '#000000' : '#f4f7fb') + '">');
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Water Mirror</title>
     <meta name="description" content="Qui se douche ? Choisissez votre profil Water Mirror.">
-    <meta name="theme-color" content="#f4f7fb" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
     <link rel="icon" href="/img/favicon.png" type="image/png">
     <link rel="apple-touch-icon" href="/img/logo-mark.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,12 +30,16 @@
     <script type="module" src="/assets/js/pages/index.js"></script>
 </head>
 <body data-page="index">
+    <a class="skip-link" href="#profiles">Aller aux profils</a>
     <main class="welcome">
         <header class="welcome-top">
             <a class="brand" href="/"><img src="/img/logo-mark.png" alt="" width="22" height="26">Water Mirror</a>
-            <span class="badge badge-brand" title="Économies cumulées de toute la famille">
-                <i data-icon="drop"></i><span id="family-savings" class="num">—</span>
-            </span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="badge badge-brand" title="Économies cumulées de toute la famille">
+                    <i data-icon="drop"></i><span id="family-savings" class="num">—</span>
+                </span>
+                <button class="a11y-button" type="button" data-open-a11y aria-label="Affichage et accessibilité" title="Affichage et accessibilité"><i data-icon="access"></i></button>
+            </div>
         </header>
 
         <section class="welcome-hero">

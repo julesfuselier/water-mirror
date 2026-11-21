@@ -1,7 +1,8 @@
 // Tiny spring animator (Apple-style damping ratio + response), interruptible:
 // a new call on the same key starts from the current value and keeps its velocity.
 
-const prefersReducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+import { reducedMotion } from './prefs.js';
+
 const running = new Map();
 
 /**
@@ -15,7 +16,7 @@ export function spring(key, o) {
   let v = prev ? prev.v : (o.velocity ?? 0);
   if (prev) cancelAnimationFrame(prev.raf);
 
-  if (prefersReducedMotion()) {
+  if (reducedMotion()) {
     running.delete(key);
     o.onUpdate(o.to);
     o.onComplete?.();

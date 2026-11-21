@@ -6,6 +6,7 @@ import { euros } from '../format.js';
 import { hydrateIcons, icon } from '../icons.js';
 import { getFamily, saveFamily } from '../session.js';
 import { toEuros, totalLitersSaved } from '../stats.js';
+import { bindA11yButtons } from '../a11y.js';
 import { $, avatarHtml, createSheet, escapeHtml, poll, setText } from '../ui.js';
 
 let members = getFamily();
@@ -62,5 +63,6 @@ async function refreshSavings() {
 }
 
 hydrateIcons();
+bindA11yButtons();
 render();
 poll(refreshSavings, POLL_INTERVAL_MS);

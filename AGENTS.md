@@ -7,3 +7,4 @@
 - La navigation est générée par `renderNav()` (`ui.js`) dans `<header data-nav="top">` et `<nav data-nav="tabs">` : ne pas la recopier dans les pages.
 - Design : un seul fichier `public/assets/css/app.css` (tokens clair/sombre, composants, sections par page). Icônes SVG via `icons.js` (`<i data-icon="nom">`), animations à ressort via `motion.js`. Interface en français.
 - Test local : `npm run dev` (données de démo en mémoire si `DATABASE_URL` est absent).
+- Accessibilité : préférences (thème, taille du texte, daltonisme, lecture facilitée, animations, contraste) dans `prefs.js`, panneau dans `a11y.js`, appliquées avant l'affichage par le petit script inline du `<head>` de chaque page. Ne jamais transmettre une info par la couleur seule.

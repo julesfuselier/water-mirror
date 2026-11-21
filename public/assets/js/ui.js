@@ -56,6 +56,7 @@ export function renderNav(active = document.body.dataset.page) {
       <nav class="topnav" aria-label="Navigation principale">
         ${links.map((l) => `<a href="${l.href}"${current(l)}>${l.label}</a>`).join('')}
       </nav>
+      <button class="a11y-button" type="button" data-open-a11y aria-label="Affichage et accessibilité" title="Affichage et accessibilité">${icon('access')}</button>
       ${
         user
           ? `<a class="profile-chip" href="/" title="Changer de profil">${escapeHtml(user)} ${avatarHtml(user)}</a>`
@@ -69,7 +70,15 @@ export function renderNav(active = document.body.dataset.page) {
     tabs.innerHTML = LINKS.map((l) => `<a href="${l.href}"${current(l)}>${icon(l.icon)}<span>${l.label}</span></a>`).join('');
   }
 
+  // Skip link for keyboard and screen-reader users
+  const main = document.querySelector('main');
+  if (main && !document.querySelector('.skip-link')) {
+    main.id ||= 'contenu';
+    document.body.insertAdjacentHTML('afterbegin', `<a class="skip-link" href="#${main.id}">Aller au contenu</a>`);
+  }
+
   hydrateIcons();
+  import('./a11y.js').then((m) => m.bindA11yButtons());
 }
 
 /* ---------------------------------------------------------------- sheet */
@@ -122,14 +131,19 @@ export function createSheet(sheet) {
   document.addEventListener('keydown', (e) => e.key === 'Escape' && isOpen && close());
 
   // Drag to dismiss (phones). Follows the finger 1:1 downward, resists upward.
+  // The drag only starts after a small vertical movement, so taps on labels and switches still work.
   let drag = null;
   sheet.addEventListener('pointerdown', (e) => {
-    if (!isCompact() || e.target.closest('input, textarea, button, a') || sheet.scrollTop > 0) return;
-    drag = { startY: e.clientY - y, samples: [{ y: e.clientY, t: e.timeStamp }] };
-    sheet.setPointerCapture(e.pointerId);
+    if (!isCompact() || e.target.closest('input, textarea, select, button, a, .switch') || sheet.scrollTop > 0) return;
+    drag = { pointerId: e.pointerId, originY: e.clientY, startY: e.clientY - y, active: false, samples: [{ y: e.clientY, t: e.timeStamp }] };
   });
   sheet.addEventListener('pointermove', (e) => {
-    if (!drag) return;
+    if (!drag || e.pointerId !== drag.pointerId) return;
+    if (!drag.active) {
+      if (Math.abs(e.clientY - drag.originY) < 8) return; // hysteresis before committing to a drag
+      drag.active = true;
+      sheet.setPointerCapture(e.pointerId);
+    }
     const raw = e.clientY - drag.startY;
     setY(raw < 0 ? rubberband(raw, height()) : raw);
     drag.samples.push({ y: e.clientY, t: e.timeStamp });
@@ -137,11 +151,13 @@ export function createSheet(sheet) {
   });
   const endDrag = () => {
     if (!drag) return;
+    const wasActive = drag.active;
     const s = drag.samples;
+    drag = null;
+    if (!wasActive) return;
     const first = s[0];
     const last = s[s.length - 1];
     const velocity = last.t > first.t ? ((last.y - first.y) / (last.t - first.t)) * 1000 : 0;
-    drag = null;
     if (y + project(velocity) > height() * 0.4) close(velocity);
     else spring('sheet', { from: y, to: 0, velocity, damping: 0.85, response: 0.35, onUpdate: setY });
   };

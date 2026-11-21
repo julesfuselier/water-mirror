@@ -211,6 +211,13 @@ function renderChart() {
   });
 }
 
+// Theme or contrast changed: rebuild the chart with the new colours
+addEventListener('wm:prefs', () => {
+  chart?.destroy();
+  chart = null;
+  renderChart();
+});
+
 segmented($('chart-view'), (value) => {
   view = value;
   renderChart();
