@@ -33,9 +33,20 @@ Navigateur ◀── pages statiques (public/) ◀── GET /api/showers ◀─
 | POST | `/api/showers` | clé device | Ajoute une douche `{ "user": "Alex", "liters": 12.5, "duration": "3m10s" }` |
 | GET/POST | `/update?user=Alex&liters=12.5&duration=3m10s` | clé device | Route compatible avec l'ancien firmware ESP32 |
 | POST | `/api/reset` | clé admin | Efface tout l'historique |
+| POST | `/api/leads` | — | Enregistre un contact du calculateur (consentement obligatoire) |
+| GET | `/api/leads[?format=csv]` | clé admin | Liste ou export CSV des contacts |
+| DELETE | `/api/leads?email=...` | clé admin | Supprime un contact (demande RGPD) |
 
 La clé s'envoie dans l'en-tête `x-api-key` ou en paramètre `?key=`.
 `duration` accepte des minutes (`3.5`) ou le format `3m30s`. Ajouter `device=<id>` permet d'identifier le boîtier, et `createdAt` (date ISO) d'envoyer une mesure faite hors ligne.
+
+## Calculateur & collecte de contacts
+
+Page publique `/calculateur` (« Combien coûte vraiment ta douche ? ») : calcul en direct, bouton de partage, puis formulaire pour être recontacté (lancement, test du boîtier, partenariat). Les contacts vont dans la table `leads` (un par e-mail, créée automatiquement).
+
+- Suivre la provenance : partager le lien avec `?utm_source=instagram&utm_campaign=lancement` (TikTok, flyers avec QR code, etc.).
+- Récupérer les contacts (CSV pour Excel ou Brevo/Mailchimp) : `https://water-mirror.vercel.app/api/leads?format=csv&key=<ADMIN_API_KEY>`
+- Constantes du calcul (prix de l'eau, du kWh, débits) et adresse de contact RGPD : `public/assets/js/config.js`.
 
 ## Lancer en local
 

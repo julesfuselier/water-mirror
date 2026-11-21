@@ -10,3 +10,22 @@ CREATE TABLE IF NOT EXISTS showers (
 );
 
 CREATE INDEX IF NOT EXISTS showers_household_created_idx ON showers (household_id, created_at);
+
+-- Contacts collected by /calculateur (created automatically by lib/leads.js).
+CREATE TABLE IF NOT EXISTS leads (
+  id              BIGSERIAL PRIMARY KEY,
+  email           TEXT        NOT NULL UNIQUE,
+  first_name      TEXT,
+  city            TEXT,
+  profile         TEXT        NOT NULL DEFAULT 'other',  -- student_residence | flatshare | family | manager | other
+  interests       TEXT[]      NOT NULL DEFAULT '{}',     -- launch | pilot | partner
+  calc            JSONB       NOT NULL DEFAULT '{}',     -- calculator answers and results
+  source          TEXT,                                  -- utm_source (instagram, tiktok, share...)
+  medium          TEXT,
+  campaign        TEXT,
+  referrer        TEXT,
+  consent_version TEXT        NOT NULL,
+  consent_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);

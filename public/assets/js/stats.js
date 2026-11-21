@@ -1,6 +1,9 @@
 // Pure calculations on shower records. No DOM here.
 
-import { BASELINE_LITERS, ECO_SHOWER_MAX_LITERS, EUR_PER_LITER } from './config.js';
+import {
+  BASELINE_LITERS, BATHTUB_LITERS, CALC_SAVING_MINUTES, ECO_SHOWER_MAX_LITERS, ENERGY_EUR_PER_KWH,
+  EUR_PER_LITER, HEATER_EFFICIENCY, SHOWERHEAD_FLOW, WATER_EUR_PER_M3, WH_PER_SHOWER_LITER,
+} from './config.js';
 
 export const sum = (values) => values.reduce((total, v) => total + v, 0);
 
@@ -68,4 +71,49 @@ export function litersByPeriod(showers, period, count = 6) {
     groups.set(key, group);
   }
   return [...groups.values()].sort((a, b) => a.key.localeCompare(b.key)).slice(-count);
+}
+
+/* ---------------- Calculateur « Combien coûte ta douche ? » ---------------- */
+
+/** Coût (eau + énergie) d'un volume d'eau de douche, en € et kWh. */
+function costOfLiters(liters, heater) {
+  const kwh = (liters * WH_PER_SHOWER_LITER) / 1000 / HEATER_EFFICIENCY[heater];
+  const waterEur = (liters / 1000) * WATER_EUR_PER_M3;
+  const energyEur = kwh * ENERGY_EUR_PER_KWH[heater];
+  return { kwh, waterEur, energyEur, totalEur: waterEur + energyEur };
+}
+
+/**
+ * Estimation du coût des douches d'un foyer.
+ * @param {{minutes:number, showersPerWeek:number, people:number, showerhead:'classic'|'eco'|'unknown', heater:'electric'|'gas'|'heatpump'}} input
+ */
+export function estimateShowerCost({ minutes, showersPerWeek, people, showerhead, heater }) {
+  const flow = SHOWERHEAD_FLOW[showerhead] ?? SHOWERHEAD_FLOW.unknown;
+  const heaterKey = HEATER_EFFICIENCY[heater] ? heater : 'electric';
+  const showersPerYear = (showersPerWeek * 52) * people;
+
+  const litersPerShower = minutes * flow;
+  const perShower = costOfLiters(litersPerShower, heaterKey);
+  const yearLiters = litersPerShower * showersPerYear;
+  const year = costOfLiters(yearLiters, heaterKey);
+
+  const shorterMinutes = Math.max(0, minutes - CALC_SAVING_MINUTES);
+  const shorterYearLiters = shorterMinutes * flow * showersPerYear;
+  const shorterYear = costOfLiters(shorterYearLiters, heaterKey);
+
+  return {
+    flow,
+    litersPerShower,
+    perShowerEur: perShower.totalEur,
+    yearLiters,
+    yearKwh: year.kwh,
+    yearEur: year.totalEur,
+    yearWaterEur: year.waterEur,
+    yearEnergyEur: year.energyEur,
+    energyShare: year.totalEur ? year.energyEur / year.totalEur : 0,
+    bathtubs: yearLiters / BATHTUB_LITERS,
+    savingMinutes: minutes - shorterMinutes,
+    savingLiters: yearLiters - shorterYearLiters,
+    savingEur: year.totalEur - shorterYear.totalEur,
+  };
 }

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Combien coûte vraiment ta douche ? | Water Mirror</title>
+    <meta name="description" content="Calcule en 20 secondes ce que tes douches te coûtent chaque année en eau et en énergie. Gratuit, sans inscription.">
+    <meta property="og:title" content="Combien coûte vraiment ta douche ?">
+    <meta property="og:description" content="Calcule en 20 secondes ce que tes douches te coûtent chaque année. Le résultat risque de te surprendre.">
+    <meta property="og:image" content="/img/device_hero.webp">
+    <link rel="icon" href="/img/logo.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Rajdhani:wght@600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/base.css">
+    <link rel="stylesheet" href="/assets/css/pages/calculateur.css">
+    <script type="module" src="/assets/js/pages/calculateur.js"></script>
+</head>
+<body data-page="calculateur">
+    <div class="bg-glow"></div>
+
+    <header class="topbar">
+        <a href="/calculateur" class="brand"><img src="/img/logo.png" alt=""> Water<span>Mirror</span></a>
+        <a href="/about" class="topbar-link">Le boîtier <i class="fas fa-arrow-right"></i></a>
+    </header>
+
+    <main class="calc-page">
+
+        <section class="intro">
+            <span class="tag"><i class="fas fa-calculator"></i> Calculateur gratuit · 20 secondes</span>
+            <h1>Combien coûte <span>vraiment</span> ta douche ?</h1>
+            <p>Eau + chauffage, sur toute une année : le chiffre surprend presque tout le monde.</p>
+        </section>
+
+        <div class="calc-grid">
+
+            <!-- Inputs -->
+            <form class="card inputs" id="calc-form" autocomplete="off">
+                <div class="field">
+                    <label for="minutes">Durée d'une douche <output id="minutes-out">8 min</output></label>
+                    <input type="range" id="minutes" name="minutes" min="1" max="25" step="1" value="8">
+                </div>
+
+                <div class="field">
+                    <label for="perWeek">Douches par semaine (par personne) <output id="perWeek-out">7</output></label>
+                    <input type="range" id="perWeek" name="perWeek" min="1" max="14" step="1" value="7">
+                </div>
+
+                <div class="field">
+                    <label for="people">Personnes dans le logement <output id="people-out">1</output></label>
+                    <input type="range" id="people" name="people" min="1" max="8" step="1" value="1">
+                </div>
+
+                <fieldset class="field">
+                    <legend>Ton pommeau de douche</legend>
+                    <div class="chips">
+                        <label><input type="radio" name="showerhead" value="classic" checked><span>Classique</span></label>
+                        <label><input type="radio" name="showerhead" value="eco"><span>Économique</span></label>
+                        <label><input type="radio" name="showerhead" value="unknown"><span>Je ne sais pas</span></label>
+                    </div>
+                    <p class="hint"><i class="fas fa-lightbulb"></i> Astuce : remplis un seau pendant 10 s. Plus de 1,5 L ? Ton pommeau est classique.</p>
+                </fieldset>
+
+                <fieldset class="field">
+                    <legend>Chauffage de l'eau</legend>
+                    <div class="chips">
+                        <label><input type="radio" name="heater" value="electric" checked><span>Électrique</span></label>
+                        <label><input type="radio" name="heater" value="gas"><span>Gaz</span></label>
+                        <label><input type="radio" name="heater" value="heatpump"><span>Pompe à chaleur</span></label>
+                        <label><input type="radio" name="heater" value="unknown"><span>Je ne sais pas</span></label>
+                    </div>
+                </fieldset>
+            </form>
+
+            <!-- Results -->
+            <section class="card results" aria-live="polite">
+                <div class="result-head">
+                    <img id="mascot" src="/img/goutte_contente.png" alt="">
+                    <div>
+                        <p class="result-label" id="year-label">Tes douches te coûtent</p>
+                        <p class="big-number"><span id="year-eur">0</span> €<small>/an</small></p>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <div><strong id="per-shower">0 €</strong><span>par douche</span></div>
+                    <div><strong id="year-liters">0</strong><span>litres par an</span></div>
+                    <div><strong id="bathtubs">0</strong><span>baignoires remplies</span></div>
+                </div>
+
+                <p class="split" id="split"></p>
+
+                <div class="saving">
+                    <i class="fas fa-stopwatch"></i>
+                    <p id="saving-text"></p>
+                </div>
+
+                <button type="button" class="share-btn" id="share-btn"><i class="fas fa-share-nodes"></i> Défier un ami</button>
+                <p class="method">Estimation sur la base du prix moyen de l'eau en France (4,89 €/m³) et du tarif réglementé de l'électricité. Ton coût réel dépend de ta commune et de ton contrat.</p>
+            </section>
+        </div>
+
+        <!-- Lead capture -->
+        <section class="card lead" id="lead">
+            <div class="lead-copy">
+                <h2>Fais baisser ce chiffre <span>en jouant</span>.</h2>
+                <p>Water Mirror est un petit boîtier qui affiche ta consommation pendant la douche, et une appli qui transforme chaque litre économisé en défi entre colocs, étages ou en famille. On cherche nos premiers testeurs.</p>
+                <ul>
+                    <li><i class="fas fa-check"></i> Sois prévenu du lancement</li>
+                    <li><i class="fas fa-check"></i> Teste le boîtier gratuitement dans ta résidence</li>
+                    <li><i class="fas fa-check"></i> Aucun spam, désinscription en un clic</li>
+                </ul>
+            </div>
+
+            <form id="lead-form" class="lead-form" novalidate>
+                <div class="row">
+                    <input type="email" name="email" placeholder="Ton e-mail *" required autocomplete="email">
+                    <input type="text" name="firstName" placeholder="Prénom" autocomplete="given-name" maxlength="60">
+                </div>
+                <div class="row">
+                    <select name="profile" aria-label="Tu es">
+                        <option value="student_residence">Étudiant·e en résidence</option>
+                        <option value="flatshare">En colocation</option>
+                        <option value="family">En famille</option>
+                        <option value="manager">Gestionnaire de résidence / bailleur</option>
+                        <option value="other">Autre</option>
+                    </select>
+                    <input type="text" name="city" placeholder="Ville" autocomplete="address-level2" maxlength="80">
+                </div>
+
+                <fieldset class="interests">
+                    <legend>Ça m'intéresse :</legend>
+                    <label><input type="checkbox" name="interests" value="launch" checked> Être prévenu du lancement</label>
+                    <label><input type="checkbox" name="interests" value="pilot"> Tester le boîtier</label>
+                    <label><input type="checkbox" name="interests" value="partner"> Un partenariat (pro, résidence, marque)</label>
+                </fieldset>
+
+                <!-- Honeypot anti-spam: hidden from humans -->
+                <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                <label class="consent">
+                    <input type="checkbox" name="consent" required>
+                    <span>J'accepte que l'équipe Water Mirror conserve mon e-mail et mes réponses pour me recontacter au sujet du projet. Je peux me désinscrire à tout moment.</span>
+                </label>
+
+                <button type="submit" class="cta" id="lead-submit">Je veux tester Water Mirror <i class="fas fa-arrow-right"></i></button>
+                <p class="form-msg" id="lead-msg" role="status"></p>
+
+                <details class="privacy">
+                    <summary>Comment sont utilisées mes données ?</summary>
+                    <p>Responsable : l'équipe projet Water Mirror (étudiants UTT). Finalité : te recontacter au sujet de Water Mirror (lancement, tests, actualités) et mieux comprendre nos futurs utilisateurs. Données : e-mail, prénom, profil, ville, réponses au calculateur. Conservation : 3 ans après notre dernier échange. Elles ne sont jamais vendues ni transmises à des tiers. Pour y accéder, les corriger ou les supprimer : <a id="privacy-mail" href="#"></a>.</p>
+                </details>
+            </form>
+        </section>
+
+    </main>
+</body>
+</html>
