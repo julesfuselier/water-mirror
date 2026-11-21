@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400..700&display=swap">
     <link rel="stylesheet" href="/assets/css/app.css">
     <script type="module" src="/assets/js/pages/about.js"></script>
+    <link rel="preload" as="image" href="/img/explode/ecran.webp">
 </head>
 <body data-page="about">
     <header class="topbar" data-nav="top"></header>
@@ -36,7 +37,16 @@
         <section class="about-hero">
             <h1 class="display">On ne réduit que <em class="accent brand-text">ce qu’on voit.</em></h1>
             <p>Water Mirror se fixe sur votre douche, mesure chaque litre en temps réel et transforme les économies d’eau en jeu de famille.</p>
-            <img class="reveal" src="/img/device_hero.webp" alt="Vue éclatée du boîtier Water Mirror et de son débitmètre" width="560" height="560">
+        </section>
+
+        <!-- Exploded view: the device opens from the inside as you scroll (assets/js/explode.js) -->
+        <section class="explode" id="explode" aria-label="Le boîtier Water Mirror, pièce par pièce">
+            <div class="explode-sticky">
+                <div class="explode-stage" id="explode-stage">
+                    <img class="explode-fallback" src="/img/device_hero.webp" alt="Vue éclatée du boîtier Water Mirror : écran, carte ESP32, batterie, coque, capot et débitmètre" width="1024" height="1024">
+                </div>
+                <p class="explode-hint caption" id="explode-hint">Faites défiler pour ouvrir le boîtier</p>
+            </div>
         </section>
 
         <section class="feature reveal">

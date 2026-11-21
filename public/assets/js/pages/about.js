@@ -1,10 +1,12 @@
 // Le projet : apparitions au défilement et démo de rotation de l’écran.
 
 import { spring } from '../motion.js';
+import { initExplodedView } from '../explode.js';
 import { renderNav, revealOnScroll } from '../ui.js';
 
 renderNav();
 revealOnScroll();
+initExplodedView(document.getElementById('explode'));
 
 const stage = document.getElementById('flip');
 const device = document.getElementById('flip-device');
