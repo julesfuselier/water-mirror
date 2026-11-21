@@ -28,3 +28,16 @@ export async function resetHistory(adminKey) {
     throw new Error(body.error || `HTTP ${res.status}`);
   }
 }
+
+/** Sends a contact collected by the /calculateur page. */
+export async function submitLead(lead) {
+  const res = await fetch('/api/leads', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(lead),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || `HTTP ${res.status}`);
+  }
+}
