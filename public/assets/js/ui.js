@@ -131,18 +131,19 @@ export function createSheet(sheet) {
   document.addEventListener('keydown', (e) => e.key === 'Escape' && isOpen && close());
 
   // Drag to dismiss (phones). Follows the finger 1:1 downward, resists upward.
-  // The drag only starts after a small vertical movement, so taps on labels and switches still work.
+  // Only the grab bar at the top drags; everything else scrolls and taps normally.
   let drag = null;
-  sheet.addEventListener('pointerdown', (e) => {
-    if (!isCompact() || e.target.closest('input, textarea, select, button, a, .switch') || sheet.scrollTop > 0) return;
+  const grabber = sheet.querySelector('.sheet-handle') ?? sheet;
+  grabber.addEventListener('pointerdown', (e) => {
+    if (!isCompact()) return;
     drag = { pointerId: e.pointerId, originY: e.clientY, startY: e.clientY - y, active: false, samples: [{ y: e.clientY, t: e.timeStamp }] };
+    grabber.setPointerCapture(e.pointerId); // keep tracking even when the finger leaves the grab bar
   });
-  sheet.addEventListener('pointermove', (e) => {
+  grabber.addEventListener('pointermove', (e) => {
     if (!drag || e.pointerId !== drag.pointerId) return;
     if (!drag.active) {
-      if (Math.abs(e.clientY - drag.originY) < 8) return; // hysteresis before committing to a drag
+      if (Math.abs(e.clientY - drag.originY) < 4) return; // small hysteresis before committing to a drag
       drag.active = true;
-      sheet.setPointerCapture(e.pointerId);
     }
     const raw = e.clientY - drag.startY;
     setY(raw < 0 ? rubberband(raw, height()) : raw);
@@ -161,8 +162,8 @@ export function createSheet(sheet) {
     if (y + project(velocity) > height() * 0.4) close(velocity);
     else spring('sheet', { from: y, to: 0, velocity, damping: 0.85, response: 0.35, onUpdate: setY });
   };
-  sheet.addEventListener('pointerup', endDrag);
-  sheet.addEventListener('pointercancel', endDrag);
+  grabber.addEventListener('pointerup', endDrag);
+  grabber.addEventListener('pointercancel', endDrag);
 
   return { open, close, get isOpen() { return isOpen; } };
 }

@@ -207,7 +207,11 @@ button {
 em.accent {
     font-style: italic;
     font-weight: inherit;
-    white-space: nowrap;
+}
+
+.display,
+.title-1 {
+    text-wrap: balance;
 }
 
 /* ---------------------------------------------------------------- chrome: top bar */
@@ -789,9 +793,10 @@ textarea.input {
     background: var(--surface);
     border-radius: 28px 28px 0 0;
     box-shadow: var(--shadow-lg);
+    overflow-x: hidden;
+    overscroll-behavior: contain;
     transform: translateY(105%);
     visibility: hidden;
-    touch-action: none;
 }
 
 .sheet.open {
@@ -799,16 +804,25 @@ textarea.input {
 }
 
 .sheet-handle {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    height: 34px;
+    margin: -10px -22px 4px;
+    display: grid;
+    place-items: center;
+    touch-action: none; /* only the grab area drags the sheet; the rest scrolls normally */
+    cursor: grab;
+    background: var(--surface);
+}
+
+.sheet-handle::before {
+    content: '';
     width: 38px;
     height: 5px;
     border-radius: 999px;
     background: var(--text-3);
     opacity: 0.5;
-    margin: 0 auto 14px;
-}
-
-.sheet-body {
-    touch-action: pan-y;
 }
 
 @media (min-width: 720px) {
@@ -919,7 +933,15 @@ textarea.input {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     gap: 12px;
+}
+
+.welcome-top > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
 }
 
 .welcome-hero {
@@ -1985,8 +2007,19 @@ select.input {
 
 .setting .segmented {
     display: grid;
+    grid-auto-columns: minmax(0, 1fr);
     width: 100%;
     margin-top: 10px;
+}
+
+.setting .segmented button {
+    white-space: normal;
+    padding: 8px 6px;
+    line-height: 1.2;
+}
+
+.setting-row > div {
+    min-width: 0;
 }
 
 .setting p.caption {
